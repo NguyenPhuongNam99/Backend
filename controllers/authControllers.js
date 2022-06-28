@@ -26,6 +26,16 @@ const authController = {
         }
     },
 
+    //generat accestoken
+    generateAccessToken: (user) => {
+        return jwt.sign({
+                    id: user.id,
+                    admin: user.admin
+                }, "secretkey", {
+                    expiresIn: "2h"
+                } )
+    },
+
     //login 
     LoginUser: async(req, res) => {
         try {
@@ -41,17 +51,53 @@ const authController = {
                 res.status(404).json("wrong password")
             }
             if(user && isPassword){
-              const accesToken = jwt.sign({
+              const accesToken = authController.generateAccessToken(user);
+
+                const refreshToken = jwt.sign({
                     id: user.id,
-                    admin: user.admin
-                }, "secretkey", {
-                    expiresIn: "2h"
-                } )
-                res.status(200).json({user, accesToken});
+                    admin: user.admin,
+                }, 'refreshToken', {
+                    expiresIn: '365d'
+                })
+                res.cookie("refreshToken", refreshToken, {
+                    httpOnly: true,
+                    secure: false,
+                    path: "/",
+                    sameSite: "strict",
+                })
+                const {password, ...other} = user._doc;
+                res.status(200).json({...other, accesToken, refreshToken});
             }
         } catch (error) {
             
         }
+    },
+    requestRefreshToken: async (req, res) => {
+        const refreshToken = req.cookies.refreshToken;
+        res.status(200).json('refhes token')
+        if(!refreshToken){
+            res.status(401).json('you are not auth')
+        }
+        jwt.verify(refreshToken, "refreshToken", (err, user) => {
+            if(err){
+                res.status(404).json('loi')
+            }else{
+                const newAccestoken = authController.generateAccessToken(user);
+                 const newrefreshToken = jwt.sign({
+                    id: user.id,
+                    admin: user.admin,
+                }, 'refreshToken', {
+                    expiresIn: '365d'
+                })
+                 res.cookie("refreshToken", newrefreshToken, {
+                    httpOnly: true,
+                    secure: false,
+                    path: "/",
+                    sameSite: "strict",
+                })
+                res.status(200).json({accesToken: newAccestoken})
+            }
+        } )
     }
 }
 module.exports = authController;
