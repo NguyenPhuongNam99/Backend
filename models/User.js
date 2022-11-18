@@ -1,12 +1,30 @@
 const mogoose = require("mongoose");
+const AutoIncrement = require('mongoose-sequence')(mogoose);
 
 const userSchema = new mogoose.Schema({
+    _id: Number,
     username: {
         type: String,
         required: true,
-        minlength: 6,
+        minlength: 3,
         maxlength: 20,
-        unique: true
+    },
+    first_name: {
+        type: String,
+        required: true,
+        minlength: 2,
+        maxlength: 20,
+    },
+    last_name: {
+        type: String,
+        required: true,
+        minlength: 2,
+        maxlength: 20,
+    },
+    gender: Boolean,
+    phone_number: {
+        type: String,
+        required: true
     },
     email:{
         type: String,
@@ -14,6 +32,10 @@ const userSchema = new mogoose.Schema({
         minlength: 6,
         maxlength: 50,
         unique: true
+    },
+    avatar_url: {
+        type: String,
+        required: true,
     },
     password:{
         type: String,
@@ -23,6 +45,16 @@ const userSchema = new mogoose.Schema({
     admin: {
         type: Boolean,
         default: false
+    },
+    role: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String
     }
-}, {timestamps: true})
+}, {timestamps: true, _id: false})
+
+userSchema.plugin(AutoIncrement);
+
 module.exports = mogoose.model("User", userSchema)
