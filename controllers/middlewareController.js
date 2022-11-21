@@ -1,29 +1,17 @@
 const jwt = require('jsonwebtoken');
-const userController = require("../controllers/authControllers");
-
 
 const middlewareController = {
     veryfyToken: (req, res, next) => {
 
-        const token = req.headers;
+        const token = req.headers.authorization;
+        console.log('token new', token)
         if (token) {
-            const accesToken = token.authorization.split(" ")[1];
+            const accesToken = token.split(" ")[1];
             jwt.verify(accesToken, 'secretkey', (err, user) => {
-
                 if (err) {
-                    if (err.message == 'jwt expired') {
-                        const temp = userController.requestRefreshToken(req, res, next);
-                        if (temp) {
-                            next();
-                        } else {
-                            res.status(403).json('loi r')
-                        }
-                        // res.status(403).json(err.message)
-                    } else {
-                        res.status(403).json('token is not')
-                    }
-
-                } else {
+                    res.status(403).json('token is not')
+                }else{
+                    req.user = user
                     next();
                 }
 

@@ -37,13 +37,14 @@ const authController = {
             id: user.id,
             admin: user.admin
         }, "secretkey", {
-            expiresIn: "30s"
+            expiresIn: "60s"
         })
     },
 
     //login 
     LoginUser: async (req, res) => {
         try {
+            console.log('req.body.username', req.body)
             const user = await User.findOne({ username: req.body.username });
             if (!user) {
                 res.status(404).json("wrong username")
@@ -88,23 +89,21 @@ const authController = {
         jwt.verify(refreshToken, "refreshToken", (err, user) => {
             if (err) {
                 res.status(404).json('loi')
-                return false;
             } else {
-                // const newAccestoken = authController.generateAccessToken(user);
-                // const newrefreshToken = jwt.sign({
-                //     id: user.id,
-                //     admin: user.admin,
-                // }, 'refreshToken', {
-                //     expiresIn: '2d'
-                // })
-                // res.cookie("refreshToken", newrefreshToken, {
-                //     httpOnly: true,
-                //     secure: false,
-                //     path: "/",
-                //     sameSite: "strict",
-                // })
-                // res.status(200).json({accesToken: newAccestoken})
-                return true;
+                const newAccestoken = authController.generateAccessToken(user);
+                const newrefreshToken = jwt.sign({
+                    id: user.id,
+                    admin: user.admin,
+                }, 'refreshToken', {
+                    expiresIn: '2d'
+                })
+                res.cookie("refreshToken", newrefreshToken, {
+                    httpOnly: true,
+                    secure: false,
+                    path: "/",
+                    sameSite: "strict",
+                })
+                res.status(200).json({accesToken: newAccestoken})
                 // res.status(200).json({accesToken: newAccestoken})
             }
         })
