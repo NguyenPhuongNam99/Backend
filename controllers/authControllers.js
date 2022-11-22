@@ -37,7 +37,7 @@ const authController = {
             id: user.id,
             admin: user.admin
         }, "secretkey", {
-            expiresIn: "60s"
+            expiresIn: "2d"
         })
     },
 
@@ -65,11 +65,12 @@ const authController = {
                 }, 'refreshToken', {
                     expiresIn: '365d'
                 })
+                console.log('refesh cookie', refreshToken)
                 res.cookie("refreshToken", refreshToken, {
                     httpOnly: true,
                     secure: false,
                     path: "/",
-                    // sameSite: "strict",
+                    sameSite: "strict",
                 })
                 const { password, ...other } = user._doc;
                 res.status(200).json({ ...other, accesToken, refreshToken });
@@ -80,6 +81,8 @@ const authController = {
     },
     requestRefreshToken: async (req, res) => {
         const refreshToken = req.cookies.refreshToken;
+        console.log('req refresh', req.cookies)
+        console.log('refesttoken server', refreshToken)
         // res.status(200).json('refhes token')
         if (!refreshToken) {
             res.status(401).json('you are not auth')

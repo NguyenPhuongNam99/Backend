@@ -8,6 +8,7 @@ const middlewareController = {
         if (token) {
             const accesToken = token.split(" ")[1];
             jwt.verify(accesToken, 'secretkey', (err, user) => {
+                console.log('uer new', user)
                 if (err) {
                     res.status(403).json('token is not')
                 }else{
