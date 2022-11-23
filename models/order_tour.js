@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const orderTourSchema = mongoose.Schema({
-    _id: Number,
+const orderTourSchema = new mongoose.Schema({
     user_id: Number,
     tour_id: Number,
     voucher_id: Number,
@@ -13,7 +12,7 @@ const orderTourSchema = mongoose.Schema({
     payment_state: String,
     date_start: String,
     date_end: String
-}, {_id: false})
+})
 
-orderTourSchema.plugin(AutoIncrement);
+orderTourSchema.plugin(AutoIncrement, {inc_field: 'idOrderTour'});
 module.exports = mongoose.model("OrderTour", orderTourSchema)

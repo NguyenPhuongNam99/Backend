@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const imageSchema = mongoose.Schema({
-    _id: Number,
+const imageSchema = new mongoose.Schema({
     image: String
-}, {_id: false})
+})
 
-imageSchema.plugin(AutoIncrement);
 
 const reviewSchema = new mongoose.Schema({
     _id: Number,

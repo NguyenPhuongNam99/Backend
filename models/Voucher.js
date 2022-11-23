@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const voucherSchema = new mongoose.Schema({
-    _id: Number,
     name: {
         type: String,
         required: true,
@@ -14,8 +13,8 @@ const voucherSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 6,
-        maxlength: 20,
-        unique: true
+        maxlength: 500,
+    
     },
     code: String,
     image_url: String,
@@ -26,7 +25,7 @@ const voucherSchema = new mongoose.Schema({
     quantity: Number,// so luong bao nhieu nguoi dc su dungh hay nhu nao?
     time_start: String,
     time_end: String
-}, {_id: false})
-voucherSchema.plugin(AutoIncrement);
+})
+voucherSchema.plugin(AutoIncrement, {inc_field: 'id'});
 
 module.exports = mongoose.model("Voucher", voucherSchema)

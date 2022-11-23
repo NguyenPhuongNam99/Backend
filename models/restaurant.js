@@ -1,20 +1,17 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const imageSchema = mongoose.Schema({
-    _id: Number,
+const imageSchema = new mongoose.Schema({
     image: String
-}, {_id: false})
+})
 
-imageSchema.plugin(AutoIncrement)
 
-const restaurantSchema = mongoose.Schema({
-    _id: Number,
+const restaurantSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         minlength: 6,
-        maxlength: 20,
+        maxlength: 500,
         unique: true
     },
     detail_address: {
@@ -22,7 +19,6 @@ const restaurantSchema = mongoose.Schema({
         required: true,
         minlength: 6,
         maxlength: 20,
-        unique: true
     },
     city_id: Number,
     district_id: Number,
@@ -31,6 +27,7 @@ const restaurantSchema = mongoose.Schema({
     images: [imageSchema],
     price: Number,
     rate: String
-},{_id: false})
+})
 
+restaurantSchema.plugin(AutoIncrement,{inc_field: 'idrestaurant'})
 module.exports = mongoose.model("Restaurant", restaurantSchema);

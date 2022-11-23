@@ -1,47 +1,42 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const imageSchema = mongoose.Schema({
-    _id: Number,
+const imageSchema = new mongoose.Schema({
     image: String
-}, {_id: false})
+})
 
-imageSchema.plugin(AutoIncrement);
 
-const hotelSchema = mongoose.Schema({
-    _id: Number,
+const hotelSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         minlength: 6,
-        maxlength: 20,
+        maxlength: 500,
         unique: true
     },
     image: [imageSchema],
     detail_address: {
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 20,
-        unique: true
+        minlength: 2,
+        maxlength: 500,
     },
     description: {
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 20,
-        unique: true
+        minlength: 3,
+        maxlength: 500,
     },
-    type: {
+    type: { //resort or hotel
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 20,
-        unique: true
+        minlength: 2,
+        maxlength: 500,
     },
     city_id: Number, // getfillCity: ==> city ==> cityid,
     district_id: Number, // getFullDistric ==> district_name_ ==> distric_id
     rate: String
-}, {_id: false})
+})
 
+hotelSchema.plugin(AutoIncrement, {inc_field: 'idHotel'})
 module.exports = mongoose.model("Hotel", hotelSchema);

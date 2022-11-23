@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const voucherLogSchema = mongoose.Schema({
+const voucherLogSchema = new mongoose.Schema({
     _id: Number,
     voucher_id: Number,
     user_id: Number,

@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const detailTourScheduleSchema = mongoose.Schema({
-    _id: Number,
+const detailTourScheduleSchema = new mongoose.Schema({
     image_url: String,
     name: String,
     timeStart: String,
@@ -10,12 +9,11 @@ const detailTourScheduleSchema = mongoose.Schema({
     price: Number,
     detail_address: String,
     description: String
-}, {_id: false})
+})
 
-detailTourScheduleSchema.plugin(AutoIncrement)
 
 //bang chi tiet dia diem se di trong tour
-const tourScheduleSchema = mongoose.Schema({
+const tourScheduleSchema = new mongoose.Schema({
     _id: Number,
     tour_id: Number,
     detail: [detailTourScheduleSchema] //chi tiết lịch trình theo từng ngày (array)
