@@ -7,7 +7,6 @@ const imageSchema = new mongoose.Schema({
 
 
 const reviewSchema = new mongoose.Schema({
-    _id: Number,
     user_id: Number,
     content: {
         type: String,
@@ -20,6 +19,8 @@ const reviewSchema = new mongoose.Schema({
     type: String, ///TYpe: Tour, Hotel, Restaurant
     target_id: Number// toud_id || hotel_id || restaurant_id: doi tuong review
 
-},{_id: false})
+})
+
+reviewSchema.plugin(AutoIncrement, {inc_field: 'idReview'})
 
 module.exports = mongoose.model("Review", reviewSchema)

@@ -110,6 +110,8 @@ const authController = {
                 // res.status(200).json({accesToken: newAccestoken})
             }
         })
-    }
+    },
+
+    
 }
 module.exports = authController;

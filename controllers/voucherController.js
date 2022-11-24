@@ -49,12 +49,43 @@ const voucherController = {
     //xoa voucher
     deleteVoucher: async(req, res) => {
         try {
-            console.log('req voucher', req.params.id)
             const response  = await voucherModal.findAndDelete({id:req.params.id});
-            console.log('response oucher', response)
             res.status(200).json('da xoa voucher');
         } catch (error) {
-            console.log('error delete', error)
+            res.status(500).json(error)
+        }
+    },
+
+    updateVoucher: async(req, res) => {
+        try {
+            
+            const {id} = req.params;
+                const {
+                name, decription, code, 
+                image_url, price_discount, 
+                percent_discount, price_min_condition, 
+                price_max_condition, quantity, 
+                time_start, time_end
+            } = 
+            req.body;
+
+            await voucherModal.findOneAndUpdate({_idVoucher: id}, {
+                name,decription,
+                code,
+                image_url,
+                price_discount,
+                percent_discount,
+                price_min_condition,
+                price_max_condition,
+                quantity,
+                time_start,
+                time_end
+
+            },{new: true})
+
+            res.status(200).json("cap nhat voucher thanh cong")
+
+        } catch (error) {
             res.status(500).json(error)
         }
     }

@@ -26,6 +26,6 @@ const voucherSchema = new mongoose.Schema({
     time_start: String,
     time_end: String
 })
-voucherSchema.plugin(AutoIncrement, {inc_field: 'id'});
+voucherSchema.plugin(AutoIncrement, {inc_field: 'idVoucher'});
 
 module.exports = mongoose.model("Voucher", voucherSchema)

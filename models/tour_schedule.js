@@ -14,7 +14,6 @@ const detailTourScheduleSchema = new mongoose.Schema({
 
 //bang chi tiet dia diem se di trong tour
 const tourScheduleSchema = new mongoose.Schema({
-    _id: Number,
     tour_id: Number,
     detail: [detailTourScheduleSchema] //chi tiết lịch trình theo từng ngày (array)
   //ex: [
@@ -34,7 +33,7 @@ const tourScheduleSchema = new mongoose.Schema({
   //      "description" : "Thăm và động viên các em gái có hoàn cảnh khó khăn =)))))"},
   //...
   //]
-}, {_id: false})
+},{inc_field: 'idTourSchedule'})
 module.exports = mongoose.model("TourSchedule", tourScheduleSchema);
 
 

@@ -42,6 +42,76 @@ const tourController = {
         res.status(500).json(error)
     }
   },
+
+  getAllTour: async (req, res) => {
+    try {
+      
+      const response = await Tour.find();
+      res.status().json(response)
+
+    } catch (error) {
+      res.status(500).json(error)
+    }
+  },
+
+  updateTour: async (req, res) => {
+    try {
+      
+      const {id} = req.params;
+      const {
+        tour_id,
+        name,
+        description,
+        price,
+        city_id,
+        district_id,
+        total_day,
+        created_by,
+        status,
+        is_disable,
+        restaurant_id,
+        hotel_id,
+        image,
+      } = req.body;
+      
+      await Tour.findOneAndUpdate({idTour: id}, {
+        tour_id,
+        name,
+        description,
+        price,
+        city_id,
+        district_id,
+        total_day,
+        created_by,
+        status,
+        is_disable,
+        restaurant_id,
+        hotel_id,
+        image
+
+      },{new: true})
+
+      res.status(200).json('cap nhat thanh cong')
+
+
+    } catch (error) {
+      res.status(500).json('cap nhat that bai')
+
+    }
+  },
+  
+  deleteTour: async (req, res) => {
+    try {
+      
+      const {id} = req.params;
+      await Tour.findByIdAndDelete({_id: id});
+      res.status(200).json('xoa tour thanh cong')
+
+    } catch (error) {
+      
+      res.status(500).json('xoa that bai')
+    }
+  }
 };
 
 

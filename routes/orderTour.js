@@ -5,5 +5,7 @@ const router = require('express').Router();
 
 router.post('/createOrderTour', middlewareController.veryfyToken, orderController.createOrderTour);
 router.get('/getAllOrderTour', middlewareController.veryfyToken, orderController.getAllOrderTour);
+router.delete('/deleteOrderTour/:id', middlewareController.veryfyToken, orderController.deleteOrderTour);
+router.put('/updateOrderTour/:id', middlewareController.veryfyToken, orderController.updateOrderTour);
 
 module.exports = router;

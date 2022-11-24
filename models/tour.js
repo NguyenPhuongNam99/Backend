@@ -48,6 +48,6 @@ const tourSchema =  mongoose.Schema({
 
 })
 
-tourSchema.plugin(AutoIncrement, {inc_field: 'idVoucher'})
+tourSchema.plugin(AutoIncrement, {inc_field: 'idTour'})
 
 module.exports = mongoose.model("Tour", tourSchema);
