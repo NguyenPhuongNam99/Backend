@@ -3,6 +3,8 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const Grid = require("gridfs-stream");
+
 const auth = require("./routes/auth");
 const userRoute = require("./routes/user");
 const tour = require("./routes/tour");
@@ -13,6 +15,21 @@ const order_tour = require('./routes/orderTour');
 const review = require('./routes/review');
 const room = require('./routes/room');
 const tourSchedule = require('./routes/tourSchedule');
+const upload = require('./routes/upload')
+
+// const conn = mongoose.connection;
+// conn.once("open", function () {
+//   gfs = Grid(conn.db, mongoose.mongo);
+//   gfs.collection("photos");
+// })
+
+let gfs;
+
+const conn = mongoose.connection;
+conn.once("open", function () {
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection("photos");
+});
 
 const app = express();
 dotenv.config();
@@ -50,7 +67,37 @@ app.use("/v1/restaurant", restaunrant);
 app.use("/v1/orderTour", order_tour);
 app.use("/v1/review", review);
 app.use("/v1/room", room);
-app.use("/v1/tourSchedule", tourSchedule)
+app.use("/v1/tourSchedule", tourSchedule);
+app.use("/file", upload);
+
+// media routes
+app.get("/file/:filename", async (req, res) => {
+    try {
+      console.log('re new', res)
+        const file = await gfs.files.findOne({ filename: req.params.filename });
+        console.log('file res', file.filename)
+        const readStream = gfs.createReadStream(file.filename);
+        console.log('readStream res', readStream)
+
+        readStream.pipe(res);
+      // res.status(200).json('thanh cong')
+
+    } catch (error) {
+        res.send("not found");
+        // res.status(500).json(error)
+    }
+});
+
+app.delete("/file/:filename", async (req, res) => {
+    try {
+        await gfs.files.deleteOne({ filename: req.params.filename });
+        res.send("success");
+    } catch (error) {
+        console.log(error);
+        res.send("An error occured.");
+    }
+});
+
 
 app.listen(8000, () => {
   console.log("server is running");
