@@ -33,8 +33,13 @@ const hotelSchema = new mongoose.Schema({
         minlength: 2,
         maxlength: 500,
     },
-    city_id: Number, // getfillCity: ==> city ==> cityid,
-    district_id: Number, // getFullDistric ==> district_name_ ==> distric_id
+    address: {
+        type: String,
+        required: true
+    }, // getfillCity: ==> city ==> cityid,
+    address_detail: {
+        type: String
+    }, // getFullDistric ==> district_name_ ==> distric_id
     rate: String
 })
 

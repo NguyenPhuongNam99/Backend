@@ -3,11 +3,11 @@ const restaurantModel = require("../models/restaurant");
 const restaunrantController = {
     createRestaurant: async (req, res) => {
         try {
-            const { name, detail_address, city_id, open_time, close_time, images, price, rate } = req.body;
+            const { name, address_detail, address, open_time, close_time, images, price, rate } = req.body;
             const restaurantCreate = await new restaurantModel({
                 name,
-                detail_address,
-                city_id, 
+                address_detail,
+                address, 
                 open_time,
                 close_time, images,
                 price,
@@ -35,12 +35,12 @@ const restaunrantController = {
         try {
             
             const {id} = req.params;
-            const { name, detail_address, city_id, open_time, close_time, images, price, rate } = req.body;
+            const { name, address_detail, address, open_time, close_time, images, price, rate } = req.body;
 
             await restaurantModel.findOneAndUpdate({idrestaurant: id}, {
                 name,
-                detail_address,
-                city_id,
+                address_detail,
+                address,
                 open_time,
                 close_time,
                 images,

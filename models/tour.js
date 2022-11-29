@@ -7,12 +7,11 @@ const imageSchema =  mongoose.Schema({
 
 
 const tourSchema =  mongoose.Schema({
-    tour_id: Number,
     name: {
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 20,
+        minlength: 2,
+        maxlength: 500,
         unique: true
     },
     description:{
@@ -24,25 +23,28 @@ const tourSchema =  mongoose.Schema({
         required: true
     },
     image: [imageSchema],
-    city_id: {
-        type: Number,
+    address: {
+        type: String,
         required: true
     },
-    district_id:{
-        type: Number,
-        required: true
+    address_detail:{
+        type: String,
+      
     },
     total_day: Number,
     // created_by: //id nguoi tao
     created_by: Number,
     status: String,
-    is_disable: Boolean,
     restaurant_id: {
         type: Number,
         required: true
     },
     hotel_id: {
         type: Number,
+        required: true
+    },
+    is_show: {
+        type: Boolean,
         required: true
     }
 

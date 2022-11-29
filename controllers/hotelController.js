@@ -4,14 +4,14 @@ var mongoose = require('mongoose')
 const hotelController = {
     createHotel: async (req, res) => {
         try {
-          const  {name, image, description, type, city_id, district_id, rate, detail_address} = req.body;
+          const  {name, image, description, type, address, address_detail, rate, detail_address} = req.body;
             const hotelcreate = await new Hotel({
                 name,
                 image,
                 description,
                 type,
-                city_id,
-                district_id,
+                address,
+                address_detail,
                 rate,
                 detail_address
             });
@@ -37,16 +37,16 @@ const hotelController = {
 
     updateHotel: async (req, res) => {
         try {
-            const  {name, image, description, type, city_id, district_id, rate, detail_address} = req.body;
+            const  {name, image, description, type, address, address_detail, rate, detail_address} = req.body;
             const {id} = req.params;
-            console.log('id', name, image, description, type, city_id, district_id, rate, detail_address)
+            console.log('id', name, image, description, type, address, address_detail, rate, detail_address)
             const response = await Hotel.findOneAndUpdate({idHotel: id }, {
                 name,
                 image,
                 description,
                 type,
-                city_id,
-                district_id,
+                address,
+                address_detail,
                 rate,
                 detail_address
             }, { new: true })

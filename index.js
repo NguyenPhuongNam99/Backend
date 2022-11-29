@@ -23,15 +23,7 @@ const upload = require('./routes/upload')
 //   gfs.collection("photos");
 // })
 
-let gfs;
 
-const conn = mongoose.connection;
-conn.once("open", function () {
-    gfs = Grid(conn.db, mongoose.mongo);
-    gfs.collection("photos");
-});
-
-const app = express();
 dotenv.config();
 
 mongoose.connect(
@@ -46,7 +38,17 @@ mongoose.connect(
    else console.log("mongdb is connected");
   }
 );
+const app = express();
 
+let gfs;
+
+const conn = mongoose.connection;
+conn.once("open", function () {
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection("photos");
+});
+
+app.use("/file", upload);
 
 app.use(cors({
     credentials: true,
@@ -68,23 +70,15 @@ app.use("/v1/orderTour", order_tour);
 app.use("/v1/review", review);
 app.use("/v1/room", room);
 app.use("/v1/tourSchedule", tourSchedule);
-app.use("/file", upload);
 
 // media routes
 app.get("/file/:filename", async (req, res) => {
     try {
-      console.log('re new', res)
-        const file = await gfs.files.findOne({ filename: req.params.filename });
-        console.log('file res', file.filename)
-        const readStream = gfs.createReadStream(file.filename);
-        console.log('readStream res', readStream)
-
+        const file = await gfs.chunks.find({ filename: req.params.filename });
+        const readStream = await gfs.createReadStream(file.filename);
         readStream.pipe(res);
-      // res.status(200).json('thanh cong')
-
     } catch (error) {
         res.send("not found");
-        // res.status(500).json(error)
     }
 });
 
@@ -102,3 +96,29 @@ app.delete("/file/:filename", async (req, res) => {
 app.listen(8000, () => {
   console.log("server is running");
 });
+
+
+
+//1     user admin vào tạo tour ==> chọn cả khách sạn và nhà hàng ==> tổng giá
+
+//created by ?
+//thêm tác nhân là nhân viên  ==> nhân viên sẽ là người tạo tour ==> admin là người phê duyệt 
+
+//      danh sách hiển thị tour ==> chỉ hiển 1 ảnh đại diện cho địa điểm đó ==> 
+
+//2     nhà hàng, khách sạn
+//nhà hàng với khách sạn vào tạo nhà hàng, ks cho chính mình ==> thêm sửa xoá
+
+// 3     khách hàng ko cần chọn khách sạn nữa và nhà hàng nữa
+
+//4     mục tab menu icon
+// ==> khách hàng ko muốn chọn tour có thể chọn nhà hàng hoặc khách sạn theo ý thích của riêng mình
+
+
+
+
+//5    role: nhân viên ==> username, lastname, first name, role: employee, 
+//bình thường sẽ là đăng ký mặc định là user 
+//admin sẽ mặc định có tài khoản 
+
+//admin sẽ tạo tài khoản cho employee

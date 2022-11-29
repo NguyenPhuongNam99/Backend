@@ -4,35 +4,33 @@ const tourController = {
   creatTour: async (req, res) => {
     try {
       const {
-        tour_id,
         name,
         description,
         price,
-        city_id,
-        district_id,
+        address,
+        address_detail,
         total_day,
         created_by,
         status,
-        is_disable,
         restaurant_id,
         hotel_id,
         image,
+        is_show
       } = req.body;
 
       const newCreate = await new Tour({
-        tour_id: tour_id,
         name: name,
         description: description,
         price: price,
-        city_id: city_id,
-        district_id: district_id,
+        address: address,
+        address_detail: address_detail,
         total_day: total_day,
         created_by: created_by,
         status: status,
-        is_disable: is_disable,
         restaurant_id: restaurant_id,
         hotel_id: hotel_id,
         image: image,
+        is_show: is_show
       });
 
       const creatTour = await newCreate.save();
@@ -47,9 +45,10 @@ const tourController = {
     try {
       
       const response = await Tour.find();
-      res.status().json(response)
+      res.status(200).json(response)
 
     } catch (error) {
+      console.log('error tour', error)
       res.status(500).json(error)
     }
   },
@@ -59,35 +58,33 @@ const tourController = {
       
       const {id} = req.params;
       const {
-        tour_id,
         name,
         description,
         price,
-        city_id,
-        district_id,
+        address,
+        address_detail,
         total_day,
         created_by,
         status,
-        is_disable,
         restaurant_id,
         hotel_id,
         image,
+        is_show
       } = req.body;
       
       await Tour.findOneAndUpdate({idTour: id}, {
-        tour_id,
         name,
         description,
         price,
-        city_id,
-        district_id,
+        address,
+        address_detail,
         total_day,
         created_by,
         status,
-        is_disable,
         restaurant_id,
         hotel_id,
-        image
+        image,
+        is_show
 
       },{new: true})
 

@@ -14,14 +14,15 @@ const restaurantSchema = new mongoose.Schema({
         maxlength: 500,
         unique: true
     },
-    detail_address: {
+    // detail_address: {
+    //     type: String,
+    //     required: true,
+    // },
+    address: {
         type: String,
-        required: true,
-        minlength: 6,
-        maxlength: 20,
+        required: true
     },
-    city_id: Number,
-    district_id: Number,
+    address_detail: String,
     open_time: String,
     close_time: String,
     images: [imageSchema],
