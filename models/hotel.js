@@ -15,12 +15,6 @@ const hotelSchema = new mongoose.Schema({
         unique: true
     },
     image: [imageSchema],
-    detail_address: {
-        type: String,
-        required: true,
-        minlength: 2,
-        maxlength: 500,
-    },
     description: {
         type: String,
         required: true,
@@ -35,11 +29,18 @@ const hotelSchema = new mongoose.Schema({
     },
     address: {
         type: String,
-        required: true
+        required: true,
+        minlength: 2,
+        maxlength: 500,
+
     }, // getfillCity: ==> city ==> cityid,
     address_detail: {
         type: String
     }, // getFullDistric ==> district_name_ ==> distric_id
+    price:{
+        type: Number,
+        required: true
+    },
     rate: String
 })
 

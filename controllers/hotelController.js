@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
 const hotelController = {
     createHotel: async (req, res) => {
         try {
-          const  {name, image, description, type, address, address_detail, rate, detail_address} = req.body;
+          const  {name, image, description, type, address, address_detail, rate, price} = req.body;
             const hotelcreate = await new Hotel({
                 name,
                 image,
@@ -13,7 +13,7 @@ const hotelController = {
                 address,
                 address_detail,
                 rate,
-                detail_address
+                price
             });
 
             const response = await hotelcreate.save();
@@ -37,9 +37,9 @@ const hotelController = {
 
     updateHotel: async (req, res) => {
         try {
-            const  {name, image, description, type, address, address_detail, rate, detail_address} = req.body;
+            const  {name, image, description, type, address, address_detail, rate, price } = req.body;
             const {id} = req.params;
-            console.log('id', name, image, description, type, address, address_detail, rate, detail_address)
+            console.log('id', name, image, description, type, address, address_detail, rate)
             const response = await Hotel.findOneAndUpdate({idHotel: id }, {
                 name,
                 image,
@@ -48,7 +48,7 @@ const hotelController = {
                 address,
                 address_detail,
                 rate,
-                detail_address
+                price
             }, { new: true })
             console.log('response new', response);
             res.status(200).json('cap nhat thanh cong')
