@@ -26,14 +26,13 @@ const upload = require("./routes/upload");
 dotenv.config();
 
 mongoose.connect(
-  "mongodb+srv://namnguyen:NGUYENphuongnam1010@atlascluster.cnc8ipm.mongodb.net/?retryWrites=true&w=majority",
-  {
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 30000,
-    socketTimeoutMS: 75000,
-    keepAlive: true,
-    useNewUrlParser: true,
-  },
+  'mongodb+srv://namnguyen:NGUYENphuongnam1010@atlascluster.cnc8ipm.mongodb.net/?retryWrites=true&w=majority',{
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  serverSelectionTimeoutMS: 30000,
+  socketTimeoutMS: 75000,
+  keepAlive: true,
+},
   (err) => {
     if (err) console.log("error new", err);
     else console.log("mongdb is connected");
@@ -71,8 +70,6 @@ app.use(
   })
 );
 
-app.use("/file", upload);
-
 // app.use(cors({
 //     credentials: true,
 //     origin: "http://localhost:3000",
@@ -92,15 +89,20 @@ app.use("/v1/orderTour", order_tour);
 app.use("/v1/review", review);
 app.use("/v1/room", room);
 app.use("/v1/tourSchedule", tourSchedule);
+app.use("/file", upload);
+
 
 // media routes
 app.get("/file/:filename", async (req, res) => {
-  try {
-    const file = await gfs.chunks.find({ filename: req.params.filename });
-    gfs.createReadStream(file.filename).pipe(res);
-  } catch (error) {
-    res.send("not found");
-  }
+    
+        const file = await gfs.files.findOne({ filename: req.params.filename });
+        console.log('file', req.params.filename)
+        const readStream =  gfs.createReadStream(file.filename);
+        readStream.pipe(res);
+    try {
+    } catch (error) {
+        res.send("not found");
+    }
 });
 
 app.delete("/file/:filename", async (req, res) => {
