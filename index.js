@@ -16,6 +16,7 @@ const review = require("./routes/review");
 const room = require("./routes/room");
 const tourSchedule = require("./routes/tourSchedule");
 const upload = require("./routes/upload");
+const uploadnew = require("./controllers/upload");
 
 // const conn = mongoose.connection;
 // conn.once("open", function () {
@@ -26,13 +27,14 @@ const upload = require("./routes/upload");
 dotenv.config();
 
 mongoose.connect(
-  'mongodb+srv://namnguyen:NGUYENphuongnam1010@atlascluster.cnc8ipm.mongodb.net/?retryWrites=true&w=majority',{
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-  serverSelectionTimeoutMS: 30000,
-  socketTimeoutMS: 75000,
-  keepAlive: true,
-},
+  "mongodb+srv://namnguyen:NGUYENphuongnam1010@atlascluster.cnc8ipm.mongodb.net/?retryWrites=true&w=majority",
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    serverSelectionTimeoutMS: 30000,
+    socketTimeoutMS: 75000,
+    keepAlive: true,
+  },
   (err) => {
     if (err) console.log("error new", err);
     else console.log("mongdb is connected");
@@ -90,19 +92,27 @@ app.use("/v1/review", review);
 app.use("/v1/room", room);
 app.use("/v1/tourSchedule", tourSchedule);
 app.use("/file", upload);
-
+app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
+  if (req) {
+    res.status(200).json({
+      uploaded: true,
+      url: req.file.location,
+    });
+  } else {
+    res.json("An unknown error occurred!");
+  }
+});
 
 // media routes
 app.get("/file/:filename", async (req, res) => {
-    
-        const file = await gfs.files.findOne({ filename: req.params.filename });
-        console.log('file', req.params.filename)
-        const readStream =  gfs.createReadStream(file.filename);
-        readStream.pipe(res);
-    try {
-    } catch (error) {
-        res.send("not found");
-    }
+  const file = await gfs.files.findOne({ filename: req.params.filename });
+  console.log("file", req.params.filename);
+  const readStream = gfs.createReadStream(file.filename);
+  readStream.pipe(res);
+  try {
+  } catch (error) {
+    res.send("not found");
+  }
 });
 
 app.delete("/file/:filename", async (req, res) => {
