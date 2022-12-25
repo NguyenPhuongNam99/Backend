@@ -17,6 +17,7 @@ const room = require("./routes/room");
 const tourSchedule = require("./routes/tourSchedule");
 const upload = require("./routes/upload");
 const uploadnew = require("./controllers/upload");
+const uploadCloudDinary = require("./middlewares/cloudinary");
 
 // const conn = mongoose.connection;
 // conn.once("open", function () {
@@ -92,6 +93,8 @@ app.use("/v1/review", review);
 app.use("/v1/room", room);
 app.use("/v1/tourSchedule", tourSchedule);
 app.use("/file", upload);
+
+//upload file ckeditor
 app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
   if (req) {
     res.status(200).json({
@@ -103,10 +106,21 @@ app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
   }
 });
 
+//upload file cloduinary
+app.post("/uploadImageCloud", uploadCloudDinary.single("image"), (req, res) => {
+  try {
+    res.status(200).json(req.file.path);
+  } catch (error) {
+    console.log("error dinary", error);
+    res.status(500).json(error);
+  }
+});
+
+
+//query image upload storage local
 // media routes
 app.get("/file/:filename", async (req, res) => {
   const file = await gfs.files.findOne({ filename: req.params.filename });
-  console.log("file", req.params.filename);
   const readStream = gfs.createReadStream(file.filename);
   readStream.pipe(res);
   try {
@@ -125,7 +139,9 @@ app.delete("/file/:filename", async (req, res) => {
   }
 });
 
-app.listen(8000, () => {
+const Port = process.env.PORT || 8000
+
+app.listen(Port, () => {
   console.log("server is running");
 });
 
