@@ -18,6 +18,7 @@ const tourSchedule = require("./routes/tourSchedule");
 const upload = require("./routes/upload");
 const uploadnew = require("./controllers/upload");
 const uploadCloudDinary = require("./middlewares/cloudinary");
+const cloduinary = require('cloudinary')
 
 // const conn = mongoose.connection;
 // conn.once("open", function () {
@@ -97,6 +98,8 @@ app.use("/file", upload);
 //upload file ckeditor
 app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
   if (req) {
+    console.log(req?.file)
+
     res.status(200).json({
       uploaded: true,
       url: req.file.location,
@@ -109,14 +112,17 @@ app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
 //upload file cloduinary
 app.post("/uploadImageCloud", uploadCloudDinary.single("upload"), (req, res) => {
   try {
-    res.status(200).json(req.file.path);
+    res.status(200).json({
+      uploaded: true,
+      url: req.file.path,
+    });
   } catch (error) {
     console.log("error dinary", error);
     res.status(500).json(error);
   }
 });
 //upload file cloduinary
-app.post("/uploadImageCloud", uploadCloudDinary.array("upload"), (req, res) => {
+app.post("/uploadImageCloudArray", uploadCloudDinary.array("upload"), (req, res) => {
   try {
     res.status(200).json(req.file.path);
   } catch (error) {
@@ -148,11 +154,32 @@ app.delete("/file/:filename", async (req, res) => {
   }
 });
 
+app.post("/images", uploadCloudDinary.array("upload", 10), async (req, res) => {
+  try {
+    let pictureFiles = req.files;
+    //Check if files exist
+    if (!pictureFiles)
+      return res.status(400).json({ message: "No picture attached!" });
+    //map through images and create a promise array using cloudinary upload function
+    let multiplePicturePromise = pictureFiles.map((picture) =>
+      cloduinary.v2.uploader.upload(picture.path)
+    );
+    // await all the cloudinary upload functions in promise.all, exactly where the magic happens
+    let imageResponses = await Promise.all(multiplePicturePromise);
+    res.status(200).json({ images: imageResponses });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+});
+
 const Port = process.env.PORT || 8080
 
 app.listen(Port, () => {
   console.log("server is running");
 });
+
 
 //1     user admin vào tạo tour ==> chọn cả khách sạn và nhà hàng ==> tổng giá
 
