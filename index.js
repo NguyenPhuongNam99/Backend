@@ -115,6 +115,15 @@ app.post("/uploadImageCloud", uploadCloudDinary.single("upload"), (req, res) => 
     res.status(500).json(error);
   }
 });
+//upload file cloduinary
+app.post("/uploadImageCloud", uploadCloudDinary.array("upload"), (req, res) => {
+  try {
+    res.status(200).json(req.file.path);
+  } catch (error) {
+    console.log("error dinary", error);
+    res.status(500).json(error);
+  }
+});
 
 
 //query image upload storage local
@@ -139,7 +148,7 @@ app.delete("/file/:filename", async (req, res) => {
   }
 });
 
-const Port = process.env.PORT || 8000
+const Port = process.env.PORT || 8080
 
 app.listen(Port, () => {
   console.log("server is running");
