@@ -18,7 +18,6 @@ const restaurantSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 3,
-    maxlength: 500,
   },
   city_id: String,
   district_id: String,
