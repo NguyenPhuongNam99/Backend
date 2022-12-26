@@ -107,7 +107,7 @@ app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
 });
 
 //upload file cloduinary
-app.post("/uploadImageCloud", uploadCloudDinary.single("image"), (req, res) => {
+app.post("/uploadImageCloud", uploadCloudDinary.single("upload"), (req, res) => {
   try {
     res.status(200).json(req.file.path);
   } catch (error) {
