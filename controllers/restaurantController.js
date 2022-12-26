@@ -5,25 +5,25 @@ const restaunrantController = {
     try {
       const {
         name,
+        description,
+        city_id,
+        district_id,
         address_detail,
-        address,
-        open_time,
-        close_time,
         images,
         price,
-        rate,
-        description,
+        open_time,
+        close_time,
       } = req.body;
       const restaurantCreate = await new restaurantModel({
         name,
+        description,
+        city_id,
+        district_id,
         address_detail,
-        address,
-        open_time,
-        close_time,
         images,
         price,
-        rate,
-        description,
+        open_time,
+        close_time,
       }).save();
       console.log("response restaunrant", restaurantCreate);
       res.status(200).json("tao thanh cong");
@@ -47,28 +47,28 @@ const restaunrantController = {
       const { id } = req.params;
       const {
         name,
+        description,
+        city_id,
+        district_id,
         address_detail,
-        address,
-        open_time,
-        close_time,
         images,
         price,
-        rate,
-        description,
+        open_time,
+        close_time,
       } = req.body;
 
       await restaurantModel.findOneAndUpdate(
         { idrestaurant: id },
         {
           name,
+          description,
+          city_id,
+          district_id,
           address_detail,
-          address,
-          open_time,
-          close_time,
           images,
           price,
-          rate,
-          description,
+          open_time,
+          close_time,
         },
         { new: true }
       );

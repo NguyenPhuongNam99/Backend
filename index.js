@@ -114,7 +114,7 @@ app.post("/uploadImageCloud", uploadCloudDinary.single("upload"), (req, res) => 
   try {
     res.status(200).json({
       uploaded: true,
-      url: req.file.path,
+      url: req?.file?.path,
     });
   } catch (error) {
     console.log("error dinary", error);
@@ -122,9 +122,9 @@ app.post("/uploadImageCloud", uploadCloudDinary.single("upload"), (req, res) => 
   }
 });
 //upload file cloduinary
-app.post("/uploadImageCloudArray", uploadCloudDinary.array("upload"), (req, res) => {
+app.post("/uploadImageCloudArray", uploadCloudDinary.single("upload"), (req, res) => {
   try {
-    res.status(200).json(req.file.path);
+    res.status(200).json(req?.file?.path);
   } catch (error) {
     console.log("error dinary", error);
     res.status(500).json(error);
