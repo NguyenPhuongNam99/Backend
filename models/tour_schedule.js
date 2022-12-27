@@ -1,14 +1,21 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
+
+const detailScheduleSchema = new mongoose.Schema({
+    day: String,
+    description: String,
+    door_price: Number,
+    location: String,
+    thumbnail: String,
+    time_end: String,
+    time_start: String
+})
+
+
 const detailTourScheduleSchema = new mongoose.Schema({
-    image_url: String,
-    name: String,
-    timeStart: String,
-    visitTime: String,
-    price: Number,
-    detail_address: String,
-    description: String
+    day: String,
+    schedule: [detailScheduleSchema]
 })
 
 

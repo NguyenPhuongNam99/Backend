@@ -2,12 +2,13 @@ const mongoose = require("mongoose");
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const imageSchema =  mongoose.Schema({
-    image: String
+    url: String,
+    uid: String
 })
 
 
 const tourSchema =  mongoose.Schema({
-    name: {
+    tour_name: {
         type: String,
         required: true,
         minlength: 2,
@@ -22,19 +23,27 @@ const tourSchema =  mongoose.Schema({
         type: Number,
         required: true
     },
-    image: [imageSchema],
-    address: {
-        type: String,
+    thumbnail: [imageSchema],
+    provinces: {
+        type: string,
         required: true
     },
-    address_detail:{
-        type: String,
-      
+    city: {
+        type: string,
+        required: true
     },
-    total_day: Number,
+    // address: {
+    //     type: String,
+    //     required: true
+    // },
+    // address_detail:{
+    //     type: String,
+      
+    // },
+    // total_day: Number,
     // created_by: //id nguoi tao
-    created_by: Number,
-    status: String,
+    // created_by: Number,
+    // status: String,
     restaurant_id: {
         type: Number,
         required: true
