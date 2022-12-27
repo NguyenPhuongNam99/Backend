@@ -16,6 +16,9 @@ const review = require("./routes/review");
 const room = require("./routes/room");
 const tourSchedule = require("./routes/tourSchedule");
 const upload = require("./routes/upload");
+const uploadnew = require("./controllers/upload");
+const uploadCloudDinary = require("./middlewares/cloudinary");
+const cloduinary = require('cloudinary')
 
 // const conn = mongoose.connection;
 // conn.once("open", function () {
@@ -29,10 +32,10 @@ mongoose.connect(
   "mongodb+srv://namnguyen:NGUYENphuongnam1010@atlascluster.cnc8ipm.mongodb.net/?retryWrites=true&w=majority",
   {
     useUnifiedTopology: true,
+    useNewUrlParser: true,
     serverSelectionTimeoutMS: 30000,
     socketTimeoutMS: 75000,
     keepAlive: true,
-    useNewUrlParser: true,
   },
   (err) => {
     if (err) console.log("error new", err);
@@ -71,8 +74,6 @@ app.use(
   })
 );
 
-app.use("/file", upload);
-
 // app.use(cors({
 //     credentials: true,
 //     origin: "http://localhost:3000",
@@ -92,12 +93,55 @@ app.use("/v1/orderTour", order_tour);
 app.use("/v1/review", review);
 app.use("/v1/room", room);
 app.use("/v1/tourSchedule", tourSchedule);
+app.use("/file", upload);
 
+//upload file ckeditor
+app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
+  if (req) {
+    console.log(req?.file)
+
+    res.status(200).json({
+      uploaded: true,
+      url: req.file.location,
+    });
+  } else {
+    res.json("An unknown error occurred!");
+  }
+});
+
+//upload file cloduinary
+app.post("/uploadImageCloud", uploadCloudDinary.single("upload"), (req, res) => {
+  try {
+    console.log('upload image', req.file)
+    res.status(200).json({
+      uploaded: true,
+      url: req?.file?.path,
+    });
+  } catch (error) {
+    console.log("error dinary", error);
+    res.status(500).json(error);
+
+  }
+});
+//upload file cloduinary
+app.post("/uploadImageCloudArray", uploadCloudDinary.single("upload"), (req, res) => {
+  try {
+    console.log('file view', req.file)
+    res.status(200).json(req?.file?.path);
+  } catch (error) {
+    console.log("error dinary", error);
+    res.status(500).json(error);
+  }
+});
+
+
+//query image upload storage local
 // media routes
 app.get("/file/:filename", async (req, res) => {
+  const file = await gfs.files.findOne({ filename: req.params.filename });
+  const readStream = gfs.createReadStream(file.filename);
+  readStream.pipe(res);
   try {
-    const file = await gfs.chunks.find({ filename: req.params.filename });
-    gfs.createReadStream(file.filename).pipe(res);
   } catch (error) {
     res.send("not found");
   }
@@ -113,9 +157,32 @@ app.delete("/file/:filename", async (req, res) => {
   }
 });
 
-app.listen(8000, () => {
+app.post("/images", uploadCloudDinary.array("upload", 10), async (req, res) => {
+  try {
+    let pictureFiles = req.files;
+    //Check if files exist
+    if (!pictureFiles)
+      return res.status(400).json({ message: "No picture attached!" });
+    //map through images and create a promise array using cloudinary upload function
+    let multiplePicturePromise = pictureFiles.map((picture) =>
+      cloduinary.v2.uploader.upload(picture.path)
+    );
+    // await all the cloudinary upload functions in promise.all, exactly where the magic happens
+    let imageResponses = await Promise.all(multiplePicturePromise);
+    res.status(200).json({ images: imageResponses });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+});
+
+const Port = process.env.PORT || 8080
+
+app.listen(Port, () => {
   console.log("server is running");
 });
+
 
 //1     user admin vào tạo tour ==> chọn cả khách sạn và nhà hàng ==> tổng giá
 

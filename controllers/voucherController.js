@@ -17,7 +17,7 @@ const voucherController = {
         try {
             const {
                 name, decription, code, 
-                image_url, price_discount, 
+                image_url, 
                 percent_discount, price_min_condition, 
                 price_max_condition, quantity, 
                 time_start, time_end
@@ -29,7 +29,6 @@ const voucherController = {
                 decription,
                 code,
                 image_url,
-                price_discount,
                 percent_discount,
                 price_min_condition,
                 price_max_condition,
@@ -49,7 +48,9 @@ const voucherController = {
     //xoa voucher
     deleteVoucher: async(req, res) => {
         try {
-            const response  = await voucherModal.findAndDelete({id:req.params.id});
+            console.log('vao day')
+            const response  = await voucherModal.findByIdAndDelete({_id:req.params.id});
+            console.log('response new', response)
             res.status(200).json('da xoa voucher');
         } catch (error) {
             res.status(500).json(error)
@@ -58,22 +59,20 @@ const voucherController = {
 
     updateVoucher: async(req, res) => {
         try {
-            
             const {id} = req.params;
                 const {
                 name, decription, code, 
-                image_url, price_discount, 
+                image_url, 
                 percent_discount, price_min_condition, 
                 price_max_condition, quantity, 
                 time_start, time_end
             } = 
             req.body;
 
-            await voucherModal.findOneAndUpdate({_idVoucher: id}, {
+         const response =  await voucherModal.findOneAndUpdate({_id: id}, {
                 name,decription,
                 code,
                 image_url,
-                price_discount,
                 percent_discount,
                 price_min_condition,
                 price_max_condition,
@@ -83,10 +82,20 @@ const voucherController = {
 
             },{new: true})
 
-            res.status(200).json("cap nhat voucher thanh cong")
+            res.status(200).json(response)
 
         } catch (error) {
             res.status(500).json(error)
+        }
+    },
+
+    getUserId: async (req, res) => {
+        try {
+            const response = await voucherModal.findOne({_id: req.params.id})
+            res.status(200).json(response);
+            console.log('response new', response);
+        } catch (error) {
+            console.log('error new', error)
         }
     }
 

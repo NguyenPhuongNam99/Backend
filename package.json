@@ -5,22 +5,29 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js -e js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "cloudinary": "^1.33.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "gridfs-stream": "^1.1.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.4.0",
+    "mongoose": "^5.12.9",
     "mongoose-sequence": "^5.3.1",
     "multer": "^1.4.5-lts.1",
     "multer-gridfs-storage": "^5.0.2",
-    "util": "^0.12.5"
+    "multer-storage-cloudinary": "^4.0.0",
+    "nodemon": "^2.0.20",
+    "path": "^0.12.7",
+    "sharp": "^0.31.2",
+    "util": "^0.12.5",
+    "uuidv4": "^6.2.13"
   }
 }
