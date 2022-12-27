@@ -1,4 +1,5 @@
 const Tour = require("../models/tour");
+const TourSchedule = require("../models/tour_schedule");
 
 const tourController = {
   creatTour: async (req, res) => {
@@ -16,7 +17,7 @@ const tourController = {
         time_line,
       } = req.body;
 
-      const newCreate = await new Tour({
+      const newCreate = await Tour({
         tour_name,
         description,
         price,
@@ -27,20 +28,18 @@ const tourController = {
         hotel_id,
         is_show,
       });
+      const creatTour = await newCreate.save();
 
       time_line.map(async (item) => {
-        item?.schedule?.map(async(schedule_item)=>{
-          const newCreateSchedule = await new TourSchedule({
-              day: item,
-              ...schedule_item
+        const newCreateSchedule = await TourSchedule({
+            day: item.day,
+            schedule:item.schedule,
+            tour_id:creatTour.idTour
           });
-           await newCreateSchedule.save();
-        })
-     
+          await newCreateSchedule.save();
       });
 
-      const creatTour = await newCreate.save();
-      res.status(200).json({creatTour});
+      res.status(200).json({ creatTour });
     } catch (error) {
       console.log("error", error);
       res.status(500).json(error);

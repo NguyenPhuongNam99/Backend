@@ -13,7 +13,6 @@ const tourSchema =  mongoose.Schema({
         required: true,
         minlength: 2,
         maxlength: 500,
-        unique: true
     },
     description:{
         type: String,
@@ -25,11 +24,11 @@ const tourSchema =  mongoose.Schema({
     },
     thumbnail: [imageSchema],
     provinces: {
-        type: string,
+        type: String,
         required: true
     },
     city: {
-        type: string,
+        type: String,
         required: true
     },
     // address: {
@@ -45,11 +44,11 @@ const tourSchema =  mongoose.Schema({
     // created_by: Number,
     // status: String,
     restaurant_id: {
-        type: Number,
+        type: String,
         required: true
     },
     hotel_id: {
-        type: Number,
+        type: String,
         required: true
     },
     is_show: {

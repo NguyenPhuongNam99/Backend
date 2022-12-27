@@ -13,16 +13,13 @@ const detailScheduleSchema = new mongoose.Schema({
 })
 
 
-const detailTourScheduleSchema = new mongoose.Schema({
-    day: String,
-    schedule: [detailScheduleSchema]
-})
-
-
 //bang chi tiet dia diem se di trong tour
 const tourScheduleSchema = new mongoose.Schema({
-    tour_id: Number,
-    detail: [detailTourScheduleSchema] //chi tiết lịch trình theo từng ngày (array)
     
-},{inc_field: 'idTourSchedule'})
+    day: String,
+    schedule: [detailScheduleSchema],
+    tour_id: Number,
+    
+})
+
 module.exports = mongoose.model("TourSchedule", tourScheduleSchema);
