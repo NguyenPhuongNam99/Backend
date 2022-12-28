@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const imageSchema =  mongoose.Schema({
+const imageSchema = new mongoose.Schema({
     url: String,
     uid: String
 })
 
 
-const tourSchema =  mongoose.Schema({
+const tourSchema = new mongoose.Schema({
     tour_name: {
         type: String,
         required: true,

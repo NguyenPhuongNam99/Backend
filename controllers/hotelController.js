@@ -14,7 +14,7 @@ const hotelController = {
         address_detail,
         price,
       } = req.body;
-      const hotelcreate = await new Hotel({
+      const hotelcreate = await Hotel({
         name,
         image,
         description,

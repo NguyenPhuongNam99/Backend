@@ -32,11 +32,11 @@ const tourController = {
 
       time_line.map(async (item) => {
         const newCreateSchedule = await TourSchedule({
-            day: item.day,
-            schedule:item.schedule,
-            tour_id:creatTour.idTour
-          });
-          await newCreateSchedule.save();
+          day: item.day,
+          schedule: item.schedule,
+          tour_id: creatTour.idTour,
+        });
+        await newCreateSchedule.save();
       });
 
       res.status(200).json({ creatTour });
@@ -106,6 +106,36 @@ const tourController = {
       res.status(200).json("xoa tour thanh cong");
     } catch (error) {
       res.status(500).json("xoa that bai");
+    }
+  },
+
+  getTourSchedule: async (req, res) => {
+    try {
+      const dataEmpty = [];
+      const dataTour = await Tour.find();
+      const dataTourSchedule = await TourSchedule.find();
+      console.log("data Tour", dataTour);
+      dataTour.map((item) => {
+        dataTourSchedule.map((itemSchedule) => {
+          console.log("v1", item);
+          console.log("v2", itemSchedule);
+
+          if (item.idTour === itemSchedule.tour_id) {
+            dataEmpty.push({
+              tour_id: item.tour_id,
+              item,
+              itemSchedule,
+            });
+          }
+        });
+        
+      });
+
+      console.log("data empty", dataEmpty);
+
+      res.status(200).json(dataEmpty);
+    } catch (error) {
+      res.status(500).json(error);
     }
   },
 };
