@@ -114,25 +114,22 @@ const tourController = {
       const dataEmpty = [];
       const dataTour = await Tour.find();
       const dataTourSchedule = await TourSchedule.find();
-      console.log("data Tour", dataTour);
       dataTour.map((item) => {
-        dataTourSchedule.map((itemSchedule) => {
-          console.log("v1", item);
-          console.log("v2", itemSchedule);
-
+        const response = dataTourSchedule.map((itemSchedule) => {
           if (item.idTour === itemSchedule.tour_id) {
-            dataEmpty.push({
-              tour_id: item.tour_id,
-              item,
-              itemSchedule,
-            });
+            return itemSchedule;
+          } else {
+            return;
           }
         });
-        
+
+        const filterData = response.filter((item) => item !== undefined);
+
+        dataEmpty.push({
+          item: item,
+          time_line: filterData,
+        });
       });
-
-      console.log("data empty", dataEmpty);
-
       res.status(200).json(dataEmpty);
     } catch (error) {
       res.status(500).json(error);
