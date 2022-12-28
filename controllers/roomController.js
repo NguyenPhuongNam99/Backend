@@ -4,7 +4,7 @@ const roomControler = {
     createRoom: async ( req, res) => {
         try {
             const {hotel_id, room_number, floor, price, capacity} = req.body;
-            const response = await new roomModel({
+            const response = await roomModel({
                 hotel_id,
                 room_number,
                 floor,

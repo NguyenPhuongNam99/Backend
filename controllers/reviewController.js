@@ -6,7 +6,7 @@ const reviewController = {
         try {
             const { user_id, content, images, rate_star, type, target_id } = req.body;
 
-        const response = await new reviewModel({
+        const response = await reviewModel({
             user_id,
             content,
             images,

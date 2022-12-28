@@ -57,18 +57,9 @@ const hotelController = {
         price,
       } = req.body;
       const { id } = req.params;
-      console.log(
-        "id",
-        name,
-        image,
-        description,
-        type,
-        address,
-        address_detail,
-        rate
-      );
+      
       const response = await Hotel.findOneAndUpdate(
-        { idHotel: id },
+        { _id: id },
         {
           name,
           image,

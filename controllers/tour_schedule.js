@@ -5,7 +5,7 @@ const tourScheduleController = {
         try {
             
             const {tour_id, detail} = req.body;
-            const response = new tour_schedule({
+            const response = await tour_schedule({
                 tour_id,
                 detail
             }).save();

@@ -14,7 +14,7 @@ const restaunrantController = {
         open_time,
         close_time,
       } = req.body;
-      const restaurantCreate = await new restaurantModel({
+      const restaurantCreate = await restaurantModel({
         name,
         description,
         city_id,
@@ -58,7 +58,7 @@ const restaunrantController = {
       } = req.body;
 
       await restaurantModel.findOneAndUpdate(
-        { idrestaurant: id },
+        { _id: id },
         {
           name,
           description,
