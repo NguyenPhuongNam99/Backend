@@ -135,7 +135,7 @@ const tourController = {
 
       const formatDataDetail = dataEmpty.map((itemView) => itemView)
       const responseFilterId = formatDataDetail.map((itemNoew) => {
-        if(itemNoew.item.idTour === id){
+        if(itemNoew.item.idTour === Number(id)){
           return itemNoew;
         }
       })
