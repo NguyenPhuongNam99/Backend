@@ -4,14 +4,13 @@ const middlewareController = {
     veryfyToken: (req, res, next) => {
 
         const token = req.headers.authorization;
-        console.log('token new', token)
         if (token) {
             const accesToken = token.split(" ")[1];
             jwt.verify(accesToken, 'secretkey', (err, user) => {
-                console.log('uer new', user)
                 if (err) {
                     res.status(403).json('token is not')
                 }else{
+                    console.log('next')
                     req.user = user
                     next();
                 }

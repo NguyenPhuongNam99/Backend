@@ -1,6 +1,16 @@
 const Hotel = require("../models/hotel");
 
 const hotelController = {
+  getHotelType: async (req, res) => {
+    try {
+      const response = await Hotel.find();
+      console.log("response", response);
+      res.status(200).json(response);
+    } catch (error) {
+      console.log("erorr", error);
+    }
+  },
+  
   createHotel: async (req, res) => {
     try {
       const {
@@ -56,7 +66,7 @@ const hotelController = {
         price,
       } = req.body;
       const { id } = req.params;
-      
+
       const response = await Hotel.findOneAndUpdate(
         { _id: id },
         {
@@ -97,17 +107,6 @@ const hotelController = {
       res.status(500).json(error);
     }
   },
-
-  getTypeHotel: async (req, res) => {
-    try {
-      console.log('run')
-      const response = await Hotel.find();
-      console.log('response', response)
-      res.status(200).json(response)
-    } catch (error) {
-      res.status(500).json(error)
-    }
-  }
 };
 
 module.exports = hotelController;

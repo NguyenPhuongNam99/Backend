@@ -202,6 +202,19 @@ const tourController = {
       res.status(500).json({ error });
     }
   },
+
+  getTourId: async (req, res) => {
+    try {
+      
+      const response = await Tour.find();
+      console.log('response', response)
+      res.status(200).json(response)
+
+    } catch (error) {
+      console.log('eror tour', error);
+      res.status(500).json(error)
+    }
+  }
 };
 
 module.exports = tourController;
