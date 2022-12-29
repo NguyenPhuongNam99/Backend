@@ -46,16 +46,6 @@ const tourController = {
     }
   },
 
-  getAllTour: async (req, res) => {
-    try {
-      const response = await Tour.find();
-      res.status(200).json(response);
-    } catch (error) {
-      console.log("error tour", error);
-      res.status(500).json(error);
-    }
-  },
-
   updateTour: async (req, res) => {
     try {
       const { id } = req.params;
@@ -112,7 +102,6 @@ const tourController = {
   getTourSchedule: async (req, res) => {
     try {
       const { id } = req.params;
-      console.log('id', id, typeof id)
       const dataEmpty = [];
       const dataTour = await Tour.find();
       const dataTourSchedule = await TourSchedule.find();
@@ -133,43 +122,72 @@ const tourController = {
         });
       });
 
-      const formatDataDetail = dataEmpty.map((itemView) => itemView)
+      const formatDataDetail = dataEmpty.map((itemView) => itemView);
       const responseFilterId = formatDataDetail.map((itemNoew) => {
-        if(itemNoew.item.idTour === Number(id)){
+        if (itemNoew.item.idTour === Number(id)) {
           return itemNoew;
         }
-      })
+      });
 
-      const filterNull = responseFilterId.filter((itemFilter) => itemFilter !== undefined);
-      console.log('filter null', filterNull)
-      // const check = formatDataDetail.filter((._id) => item.idTour === Number(id));
-      // console.log('check', check)
+      const filterNull = responseFilterId.filter(
+        (itemFilter) => itemFilter !== undefined
+      );
       res.status(200).json(filterNull);
     } catch (error) {
       res.status(500).json(error);
     }
   },
 
-
-  deleteTourSchedule : async (req, res) => {
+  deleteTourSchedule: async (req, res) => {
     try {
-      const {id} = req.params;
-      const deleteTourParam = await Tour.findOne({idTour: id})
-      const deleteTour = await Tour.findByIdAndDelete({_id: deleteTourParam._id})
-      const response =  await TourSchedule.find({tour_id: id});
+      const { id } = req.params;
+      const deleteTourParam = await Tour.findOne({ idTour: id });
+      const deleteTour = await Tour.findByIdAndDelete({
+        _id: deleteTourParam._id,
+      });
+      const response = await TourSchedule.find({ tour_id: id });
       response.map(async (item) => {
-        const deleteTourScheduleData = await TourSchedule.findByIdAndDelete({_id: item._id})
-        console.log('delete tour success', deleteTourScheduleData)
-      })
-      
-      console.log('delete all success')
-      res.status(200).json('delete all success')
-    } catch (error) {
-      console.log('error', error)
-      res.status(500).json(error)
+        const deleteTourScheduleData = await TourSchedule.findByIdAndDelete({
+          _id: item._id,
+        });
+        console.log("delete tour success", deleteTourScheduleData);
+      });
 
+      console.log("delete all success");
+      res.status(200).json("delete all success");
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).json(error);
     }
-  }
+  },
+
+  getAllTour: async (req, res) => {
+    try {
+      const dataEmpty = [];
+      const dataTour = await Tour.find();
+      const dataTourSchedule = await TourSchedule.find();
+      dataTour.map((item) => {
+        const response = dataTourSchedule.map((itemSchedule) => {
+          if (item.idTour === itemSchedule.tour_id) {
+            return itemSchedule;
+          } else {
+            return;
+          }
+        });
+
+        const filterData = response.filter((item) => item !== undefined);
+
+        dataEmpty.push({
+          item: item,
+          time_line: filterData,
+        });
+
+        res.status(200).json(dataEmpty)
+      });
+    } catch (error) {
+      res.status(500).json(error)
+    }
+  },
 };
 
 module.exports = tourController;
