@@ -5,16 +5,13 @@ const voucherSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 20,
+        minlength: 3,
         unique: true
     },
     decription: {
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 500,
-    
+        minlength: 3,    
     },
     code: String,
     image_url: String,

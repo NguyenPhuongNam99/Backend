@@ -12,7 +12,6 @@ const reviewSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 1,
-        maxlength: 20,
     },
     images: [imageSchema],
     rate_star: Number,
