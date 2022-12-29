@@ -160,6 +160,27 @@ const tourController = {
       res.status(500).json(error);
     }
   },
+
+
+  deleteTourSchedule : async (req, res) => {
+    try {
+      const {id} = req.params;
+      const deleteTourParam = await Tour.findOne({idTour: id})
+      const deleteTour = await Tour.findByIdAndDelete({_id: deleteTourParam._id})
+      const response =  await TourSchedule.find({tour_id: id});
+      response.map(async (item) => {
+        const deleteTourScheduleData = await TourSchedule.findByIdAndDelete({_id: item._id})
+        console.log('delete tour success', deleteTourScheduleData)
+      })
+      
+      console.log('delete all success')
+      res.status(200).json('delete all success')
+    } catch (error) {
+      console.log('error', error)
+      res.status(500).json(error)
+
+    }
+  }
 };
 
 module.exports = tourController;
