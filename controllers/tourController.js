@@ -80,7 +80,7 @@ const tourController = {
         { new: true }
       );
 
-      console.log('id', id)
+      console.log("id", id);
       const response = await TourSchedule.find({ tour_id: id });
       response.map(async (item) => {
         const deleteTourScheduleData = await TourSchedule.findByIdAndDelete({
@@ -192,16 +192,14 @@ const tourController = {
         });
 
         const filterData = response.filter((item) => item !== undefined);
-
         dataEmpty.push({
           item: item,
           time_line: filterData,
         });
-
-        res.status(200).json(dataEmpty);
       });
+      res.status(200).json(dataEmpty);
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({ error });
     }
   },
 };
