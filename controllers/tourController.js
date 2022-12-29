@@ -111,6 +111,8 @@ const tourController = {
 
   getTourSchedule: async (req, res) => {
     try {
+      const { id } = req.params;
+      console.log('id', id, typeof id)
       const dataEmpty = [];
       const dataTour = await Tour.find();
       const dataTourSchedule = await TourSchedule.find();
@@ -130,7 +132,19 @@ const tourController = {
           time_line: filterData,
         });
       });
-      res.status(200).json(dataEmpty);
+
+      const formatDataDetail = dataEmpty.map((itemView) => itemView)
+      const responseFilterId = formatDataDetail.map((itemNoew) => {
+        if(itemNoew.item.idTour === Number(42)){
+          return itemNoew;
+        }
+      })
+
+      const filterNull = responseFilterId.filter((itemFilter) => itemFilter !== undefined);
+      console.log('filter null', filterNull)
+      // const check = formatDataDetail.filter((._id) => item.idTour === Number(id));
+      // console.log('check', check)
+      res.status(200).json(filterNull);
     } catch (error) {
       res.status(500).json(error);
     }
