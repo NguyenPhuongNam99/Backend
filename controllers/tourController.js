@@ -64,22 +64,23 @@ const tourController = {
         time_line,
       } = req.body;
 
-      await Tour.findOneAndUpdate(
-        { _id: _id },
-        {
-          tour_name,
-          description,
-          price,
-          thumbnail,
-          provinces,
-          city,
-          restaurant_id,
-          hotel_id,
-          is_show,
-        },
-        { new: true }
-      );
+      // await Tour.findOneAndUpdate(
+      //   { _id: _id },
+      //   {
+      //     tour_name,
+      //     description,
+      //     price,
+      //     thumbnail,
+      //     provinces,
+      //     city,
+      //     restaurant_id,
+      //     hotel_id,
+      //     is_show,
+      //   },
+      //   { new: true }
+      // );
 
+      console.log('id', id)
       const response = await TourSchedule.find({ tour_id: id });
       response.map(async (item) => {
         const deleteTourScheduleData = await TourSchedule.findByIdAndDelete({
@@ -89,14 +90,14 @@ const tourController = {
       });
       // await TourSchedule.find({idTour:tour_id}).remove();
 
-      time_line.map(async (item) => {
-        const newCreateSchedule = await TourSchedule({
-          day: item.day,
-          schedule: item.schedule,
-          tour_id: tour_id,
-        });
-        await newCreateSchedule.save();
-      });
+      // time_line.map(async (item) => {
+      //   const newCreateSchedule = await TourSchedule({
+      //     day: item.day,
+      //     schedule: item.schedule,
+      //     tour_id: tour_id,
+      //   });
+      //   await newCreateSchedule.save();
+      // });
 
       res.status(200).json("cap nhat thanh cong");
     } catch (error) {
