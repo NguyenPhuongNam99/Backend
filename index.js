@@ -36,6 +36,7 @@ mongoose.connect(
     serverSelectionTimeoutMS: 30000,
     socketTimeoutMS: 75000,
     keepAlive: true,
+    useFindAndModify: false
   },
   (err) => {
     if (err) console.log("error new", err);
