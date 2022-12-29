@@ -5,12 +5,24 @@ const hotelController = {
     try {
       const response = await Hotel.find();
       console.log("response", response);
-      res.status(200).json(response);
+      const filterTypeHotel = response.filter((item) => item.type === "hotel");
+      res.status(200).json(filterTypeHotel);
     } catch (error) {
       console.log("erorr", error);
     }
   },
-  
+
+  getHomeStayType: async (req, res) => {
+    try {
+      const response = await Hotel.find();
+      console.log("response", response);
+      const filterTypeHotel = response.filter(
+        (item) => item.type === "homeStay"
+      );
+      res.status(200).json(filterTypeHotel);
+    } catch (error) {}
+  },
+
   createHotel: async (req, res) => {
     try {
       const {
