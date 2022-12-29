@@ -39,6 +39,8 @@ const tourController = {
         await newCreateSchedule.save();
       });
 
+
+
       res.status(200).json({ creatTour });
     } catch (error) {
       console.log("error", error);
@@ -48,40 +50,49 @@ const tourController = {
 
   updateTour: async (req, res) => {
     try {
-      const { id } = req.params;
+      // const { id } = req.params;
       const {
-        name,
+        _id,
+        tour_id,
+        tour_name,
         description,
         price,
-        address,
-        address_detail,
-        total_day,
-        created_by,
-        status,
+        thumbnail,
+        provinces,
+        city,
         restaurant_id,
         hotel_id,
-        image,
         is_show,
+        time_line,
       } = req.body;
 
       await Tour.findOneAndUpdate(
-        { idTour: id },
+        { _id: _id },
         {
-          name,
+          tour_name,
           description,
           price,
-          address,
-          address_detail,
-          total_day,
-          created_by,
-          status,
+          thumbnail,
+          provinces,
+          city,
           restaurant_id,
           hotel_id,
-          image,
           is_show,
         },
         { new: true }
       );
+
+      await TourSchedule.find({idTour:tour_id}).remove();
+
+      time_line.map(async (item) => {
+        const newCreateSchedule = await TourSchedule({
+          day: item.day,
+          schedule: item.schedule,
+          tour_id: tour_id,
+        });
+        await newCreateSchedule.save();
+      });
+
 
       res.status(200).json("cap nhat thanh cong");
     } catch (error) {
