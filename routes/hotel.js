@@ -7,6 +7,7 @@ router.post('/createHotel', middlewareController.veryfyToken, hotelController.cr
 router.delete('/:id', middlewareController.veryfyToken, hotelController.deleteHotel);
 router.put('/updateHotel/:id', middlewareController.veryfyToken, hotelController.updateHotel);
 router.get('/getAllHotel', middlewareController.veryfyToken, hotelController.getAllHotel);
-router.get('/:id', middlewareController.veryfyToken, hotelController.getID)
+router.get('/:id', middlewareController.veryfyToken, hotelController.getID);
+router.get('/getTypeHotel', middlewareController.veryfyToken, hotelController.getTypeHotel)
 
 module.exports = router;

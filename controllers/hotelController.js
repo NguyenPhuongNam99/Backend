@@ -1,5 +1,4 @@
 const Hotel = require("../models/hotel");
-var mongoose = require("mongoose");
 
 const hotelController = {
   createHotel: async (req, res) => {
@@ -98,6 +97,17 @@ const hotelController = {
       res.status(500).json(error);
     }
   },
+
+  getTypeHotel: async (req, res) => {
+    try {
+      console.log('run')
+      const response = await Hotel.find();
+      console.log('response', response)
+      res.status(200).json(response)
+    } catch (error) {
+      res.status(500).json(error)
+    }
+  }
 };
 
 module.exports = hotelController;
