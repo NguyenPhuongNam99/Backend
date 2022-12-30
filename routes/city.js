@@ -7,6 +7,8 @@ router.post('/createCity',middlewareController.veryfyToken, cityController.creat
 router.delete('/deleteCity/:id',middlewareController.veryfyToken, cityController.deleteCity);
 router.get('/getAllCity',middlewareController.veryfyToken, cityController.getAllCity);
 router.get('/getCity/:id',middlewareController.veryfyToken, cityController.getDistrictofCity);
+router.get('/getDataDistrict/:id',middlewareController.veryfyToken, cityController.getDataDistrict);
+
 
 
 module.exports = router;

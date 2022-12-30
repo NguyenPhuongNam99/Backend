@@ -48,6 +48,18 @@ const cityController = {
     } catch (error) {
       res.status(500).json(error)
     }
+  },
+
+  getDataDistrict: async (req, res) => {
+    try {
+      
+      const {id} = req.params;
+      const response = await City.find({cityId: id});
+      res.status(200).json( response[0].districtArray)
+
+    } catch (error) {
+      res.status(500).json(error)
+    }
   }
 };
 
