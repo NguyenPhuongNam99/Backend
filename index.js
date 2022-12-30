@@ -18,7 +18,8 @@ const tourSchedule = require("./routes/tourSchedule");
 const upload = require("./routes/upload");
 const uploadnew = require("./controllers/upload");
 const uploadCloudDinary = require("./middlewares/cloudinary");
-const cloduinary = require('cloudinary')
+const cloduinary = require('cloudinary');
+const city = require("./routes/city")
 
 // const conn = mongoose.connection;
 // conn.once("open", function () {
@@ -94,6 +95,7 @@ app.use("/v1/orderTour", order_tour);
 app.use("/v1/review", review);
 app.use("/v1/room", room);
 app.use("/v1/tourSchedule", tourSchedule);
+app.use("/v1/city", city)
 app.use("/file", upload);
 
 //upload file ckeditor

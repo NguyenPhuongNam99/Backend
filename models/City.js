@@ -1,23 +1,30 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
+
+const districtArraySchema = new mongoose.Schema({
+    name: String,
+})
+
+districtArraySchema.plugin(AutoIncrement, {inc_field: 'districtId'})
+
 const citySchema = new mongoose.Schema({
-    _id: Number,
     name: {
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 20,
+        minlength: 2,
         unique: true
     },
     decription: {
         type: String,
         required: true,
-        minlength: 6,
-        maxlength: 20,
+        minlength: 2,
         unique: true
-    }
-}, {timestamps: true, _id: false})
-citySchema.plugin(AutoIncrement)
+    },
+    districtArray: [districtArraySchema],
+    lat: String,
+    lng: String
+}, {timestamps: true})
+citySchema.plugin(AutoIncrement, {inc_field: 'cityId'})
 
 module.exports = mongoose.model("City", citySchema);
