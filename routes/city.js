@@ -9,6 +9,4 @@ router.get('/getAllCity',middlewareController.veryfyToken, cityController.getAll
 router.get('/getCity/:id',middlewareController.veryfyToken, cityController.getDistrictofCity);
 router.get('/getDataDistrict/:id',middlewareController.veryfyToken, cityController.getDataDistrict);
 
-
-
 module.exports = router;
