@@ -1,5 +1,6 @@
 const Tour = require("../models/tour");
 const TourSchedule = require("../models/tour_schedule");
+const city = require("../models/City");
 
 const tourController = {
   creatTour: async (req, res) => {
@@ -180,41 +181,60 @@ const tourController = {
   getAllTour: async (req, res) => {
     try {
       const dataEmpty = [];
-      const dataTour = await Tour.find();
+      const dataTourValue = await Tour.find();
       const dataTourSchedule = await TourSchedule.find();
-      dataTour.map((item) => {
-        const response = dataTourSchedule.map((itemSchedule) => {
-          if (item.idTour === itemSchedule.tour_id) {
-            return itemSchedule;
-          } else {
-            return;
-          }
-        });
+      const add2 = (x) => x + 2;
+      const cityResponse = await city.find();
 
-        const filterData = response.filter((item) => item !== undefined);
-        dataEmpty.push({
-          item: item,
-          time_line: filterData,
+      Promise.resolve(dataTourValue).then((dataTour) => {
+        dataTour.map(async (item) => {
+          const response = dataTourSchedule.map((itemSchedule) => {
+            if (item.idTour === itemSchedule.tour_id) {
+              return itemSchedule;
+            } else {
+              return;
+            }
+          });
+          const filterData = response.filter((item) => item !== undefined);
+
+          // const getCityName = await city.findOne({ cityId: item.city });
+
+          // console.log('get city', getCityName?.name)
+
+          const findNameCIty = cityResponse.filter((itemCity) => Number(itemCity.cityId) === Number(item.city))
+
+          dataEmpty.push({
+            item: item,
+            time_line: filterData,
+            nameCIty: findNameCIty[0].name,
+            namelat: findNameCIty[0]?.lat,
+            namelng: findNameCIty[0]?.lng,
+          });
         });
-      });
-      res.status(200).json(dataEmpty);
+        return dataEmpty;
+      }).then((data) => {
+        // console.log('data newwww', data)
+        res.status(200).json(data);
+      }).catch((error) => {
+        console.log('error', error)
+      })
+
+      
     } catch (error) {
-      res.status(500).json({ error });
+      res.status(500).json(error);
     }
   },
 
   getTourId: async (req, res) => {
     try {
-      
       const response = await Tour.find();
-      console.log('response', response)
-      res.status(200).json(response)
-
+      console.log("response", response);
+      res.status(200).json(response);
     } catch (error) {
-      console.log('eror tour', error);
-      res.status(500).json(error)
+      console.log("eror tour", error);
+      res.status(500).json(error);
     }
-  }
+  },
 };
 
 module.exports = tourController;
