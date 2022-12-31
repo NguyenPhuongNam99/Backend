@@ -4,7 +4,6 @@ const hotelController = {
   getHotelType: async (req, res) => {
     try {
       const response = await Hotel.find();
-      console.log("response", response);
       const filterTypeHotel = response.filter((item) => item.type === "hotel");
       res.status(200).json(filterTypeHotel);
     } catch (error) {
@@ -15,7 +14,6 @@ const hotelController = {
   getHomeStayType: async (req, res) => {
     try {
       const response = await Hotel.find();
-      console.log("response", response);
       const filterTypeHotel = response.filter(
         (item) => item.type === "homeStay"
       );
@@ -116,6 +114,28 @@ const hotelController = {
       const response = await Hotel.findById({ _id: id });
       res.status(200).json(response);
     } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+
+  updateOneProperty: async (req, res) => {
+    try {
+      const {
+        name,
+      } = req.body;
+      const { id } = req.params;
+
+      const response = await Hotel.findOneAndUpdate(
+        { _id: id },
+        {
+          name,
+        },
+        { new: true }
+      );
+      console.log("response new", response);
+      res.status(200).json("cap nhat thanh cong");
+    } catch (error) {
+      console.log("error try", error);
       res.status(500).json(error);
     }
   },

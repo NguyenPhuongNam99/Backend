@@ -9,5 +9,6 @@ router.delete('/:id', middlewareController.veryfyToken, hotelController.deleteHo
 router.put('/updateHotel/:id', middlewareController.veryfyToken, hotelController.updateHotel);
 router.get('/getAllHotel', middlewareController.veryfyToken, hotelController.getAllHotel);
 router.get('/:id', middlewareController.veryfyToken, hotelController.getID);
+router.put('/updateOneProperty/:id', middlewareController.veryfyToken, hotelController.updateOneProperty)
 
 module.exports = router;

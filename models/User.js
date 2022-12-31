@@ -8,23 +8,23 @@ const userSchema = new mogoose.Schema({
         required: true,
         minlength: 3,
         maxlength: 20,
+        unique: true
     },
     first_name: {
         type: String,
-        required: true,
-        minlength: 2,
+        // required: true,
+        // minlength: 2,
         maxlength: 20,
     },
     last_name: {
         type: String,
-        required: true,
-        minlength: 2,
+        // required: true,
         maxlength: 20,
     },
     gender: Boolean,
     phone_number: {
         type: String,
-        required: true
+        // required: true
     },
     email:{
         type: String,
@@ -35,12 +35,12 @@ const userSchema = new mogoose.Schema({
     },
     avatar_url: {
         type: String,
-        required: true,
+        // required: true,
     },
     password:{
         type: String,
         required: true,
-        minlength: 6
+        minlength: 3
     },
     admin: {
         type: Boolean,
@@ -48,7 +48,7 @@ const userSchema = new mogoose.Schema({
     },
     role: {
         type: String,
-        required: true
+        // required: true
     },
     status: {
         type: String
