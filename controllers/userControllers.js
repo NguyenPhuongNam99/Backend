@@ -28,7 +28,7 @@ const userController = {
     try {
       const { id } = req.params;
 
-      const { first_name, last_name, phone_number, avatar_url } =
+         const { first_name, last_name, phone_number, avatar_url } =
         req.body;
 
       const response = await User.findOneAndUpdate(

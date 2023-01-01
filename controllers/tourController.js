@@ -186,40 +186,43 @@ const tourController = {
       const add2 = (x) => x + 2;
       const cityResponse = await city.find();
 
-      Promise.resolve(dataTourValue).then((dataTour) => {
-        dataTour.map(async (item) => {
-          const response = dataTourSchedule.map((itemSchedule) => {
-            if (item.idTour === itemSchedule.tour_id) {
-              return itemSchedule;
-            } else {
-              return;
-            }
+      Promise.resolve(dataTourValue)
+        .then((dataTour) => {
+          dataTour.map(async (item) => {
+            const response = dataTourSchedule.map((itemSchedule) => {
+              if (item.idTour === itemSchedule.tour_id) {
+                return itemSchedule;
+              } else {
+                return;
+              }
+            });
+            const filterData = response.filter((item) => item !== undefined);
+
+            // const getCityName = await city.findOne({ cityId: item.city });
+
+            // console.log('get city', getCityName?.name)
+
+            const findNameCIty = cityResponse.filter(
+              (itemCity) => Number(itemCity.cityId) === Number(item.city)
+            );
+
+            dataEmpty.push({
+              item: item,
+              time_line: filterData,
+              nameCIty: findNameCIty[0].name,
+              namelat: findNameCIty[0]?.lat,
+              namelng: findNameCIty[0]?.lng,
+            });
           });
-          const filterData = response.filter((item) => item !== undefined);
-
-          // const getCityName = await city.findOne({ cityId: item.city });
-
-          // console.log('get city', getCityName?.name)
-
-          const findNameCIty = cityResponse.filter((itemCity) => Number(itemCity.cityId) === Number(item.city))
-
-          dataEmpty.push({
-            item: item,
-            time_line: filterData,
-            nameCIty: findNameCIty[0].name,
-            namelat: findNameCIty[0]?.lat,
-            namelng: findNameCIty[0]?.lng,
-          });
+          return dataEmpty;
+        })
+        .then((data) => {
+          // console.log('data newwww', data)
+          res.status(200).json(data);
+        })
+        .catch((error) => {
+          console.log("error", error);
         });
-        return dataEmpty;
-      }).then((data) => {
-        // console.log('data newwww', data)
-        res.status(200).json(data);
-      }).catch((error) => {
-        console.log('error', error)
-      })
-
-      
     } catch (error) {
       res.status(500).json(error);
     }
@@ -232,6 +235,60 @@ const tourController = {
       res.status(200).json(response);
     } catch (error) {
       console.log("eror tour", error);
+      res.status(500).json(error);
+    }
+  },
+
+  getAllTourOfCity: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const dataEmpty = [];
+      const dataTourValue = await Tour.find();
+      const dataTourSchedule = await TourSchedule.find();
+      const add2 = (x) => x + 2;
+      const cityResponse = await city.find();
+
+      Promise.resolve(dataTourValue)
+        .then((dataTour) => {
+          dataTour.map(async (item) => {
+            const response = dataTourSchedule.map((itemSchedule) => {
+              if (item.idTour === itemSchedule.tour_id) {
+                return itemSchedule;
+              } else {
+                return;
+              }
+            });
+            const filterData = response.filter((item) => item !== undefined);
+
+            // const getCityName = await city.findOne({ cityId: item.city });
+
+            // console.log('get city', getCityName?.name)
+
+            const findNameCIty = cityResponse.filter(
+              (itemCity) => Number(itemCity.cityId) === Number(item.city)
+            );
+
+            dataEmpty.push({
+              item: item,
+              time_line: filterData,
+              nameCIty: findNameCIty[0].name,
+              namelat: findNameCIty[0]?.lat,
+              namelng: findNameCIty[0]?.lng,
+            });
+          });
+          return dataEmpty;
+        })
+        .then((data) => {
+          // console.log('data newwww', data)
+          const dataCityResponse = data.filter(
+            (item) => Number(item.item.city) === Number(id)
+          );
+          res.status(200).json(dataCityResponse);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    } catch (error) {
       res.status(500).json(error);
     }
   },
