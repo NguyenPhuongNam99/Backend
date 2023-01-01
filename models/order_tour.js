@@ -11,6 +11,9 @@ const orderTourSchema = new mongoose.Schema({
   payment_state: String,
   assyneBy: Number,
   evaluate: String,
+  fullName: String,
+  phoneUser: String,
+  tourName: string
 });
 
 orderTourSchema.plugin(AutoIncrement, { inc_field: "idOrderTour" });

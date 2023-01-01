@@ -12,6 +12,9 @@ const orderController = {
         payment_state,
         assyneBy,
         evaluate,
+        fullName,
+        phoneUser,
+        tourName,
       } = req.body;
       const response = await new orderTour({
         user_id,
@@ -22,9 +25,12 @@ const orderController = {
         payment_state,
         assyneBy,
         evaluate,
+        fullName,
+        phoneUser,
+        tourName,
       }).save();
       console.log("response new", response);
-      res.status(200).json('Dat Tour thanh cong');
+      res.status(200).json("Dat Tour thanh cong");
     } catch (error) {
       res.status(500).json(error);
     }
@@ -61,6 +67,9 @@ const orderController = {
         payment_state,
         assyneBy,
         evaluate,
+        fullName,
+        phoneUser,
+        tourName,
       } = req.body;
       await orderTour.findOneAndUpdate(
         { idOrderTour: id },
@@ -73,6 +82,9 @@ const orderController = {
           payment_state,
           assyneBy,
           evaluate,
+          fullName,
+          phoneUser,
+          tourName,
         },
         { new: true }
       );
