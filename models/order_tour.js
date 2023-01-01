@@ -13,7 +13,8 @@ const orderTourSchema = new mongoose.Schema({
   evaluate: String,
   fullName: String,
   phoneUser: String,
-  tourName: String
+  tourName: String,
+  emailUser: string
 });
 
 orderTourSchema.plugin(AutoIncrement, { inc_field: "idOrderTour" });

@@ -15,6 +15,7 @@ const orderController = {
         fullName,
         phoneUser,
         tourName,
+        emailUser,
       } = req.body;
       const response = await new orderTour({
         user_id,
@@ -28,6 +29,7 @@ const orderController = {
         fullName,
         phoneUser,
         tourName,
+        emailUser
       }).save();
       console.log("response new", response);
       res.status(200).json("Dat Tour thanh cong");
@@ -70,6 +72,7 @@ const orderController = {
         fullName,
         phoneUser,
         tourName,
+        emailUser
       } = req.body;
       await orderTour.findOneAndUpdate(
         { idOrderTour: id },
@@ -85,6 +88,7 @@ const orderController = {
           fullName,
           phoneUser,
           tourName,
+          emailUser
         },
         { new: true }
       );
