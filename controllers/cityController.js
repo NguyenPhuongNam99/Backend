@@ -60,6 +60,17 @@ const cityController = {
     } catch (error) {
       res.status(500).json(error)
     }
+  },
+
+  getCitySearch: async (req, res) => {
+    try {
+      const {name} = req.params;
+      const response = await City.find({name: {$regex: name, $options: 'i'}});
+      res.status(200).json(response)
+    } catch (error) {
+      console.log('error', error)
+      res.status(500).json(error)
+    }
   }
 };
 
