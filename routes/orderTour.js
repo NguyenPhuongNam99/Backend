@@ -8,5 +8,6 @@ router.get('/getAllOrderTour', middlewareController.veryfyToken, orderController
 router.delete('/deleteOrderTour/:id', middlewareController.veryfyToken, orderController.deleteOrderTour);
 router.put('/updateOrderTour/:id', middlewareController.veryfyToken, orderController.updateOrderTour);
 router.get('/getOrderID/:id', middlewareController.veryfyToken, orderController.getOrderID);
+router.put('/onlyUpdateOrderTour/:id', middlewareController.veryfyToken, orderController.onlyUpdateOrderTour);
 
 module.exports = router;

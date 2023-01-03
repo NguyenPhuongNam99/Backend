@@ -29,7 +29,7 @@ const orderController = {
         fullName,
         phoneUser,
         tourName,
-        emailUser
+        emailUser,
       }).save();
       console.log("response new", response);
       res.status(200).json("Dat Tour thanh cong");
@@ -72,7 +72,7 @@ const orderController = {
         fullName,
         phoneUser,
         tourName,
-        emailUser
+        emailUser,
       } = req.body;
       await orderTour.findOneAndUpdate(
         { idOrderTour: id },
@@ -88,7 +88,7 @@ const orderController = {
           fullName,
           phoneUser,
           tourName,
-          emailUser
+          emailUser,
         },
         { new: true }
       );
@@ -100,14 +100,32 @@ const orderController = {
 
   getOrderID: async (req, res) => {
     try {
-      const {id} = req.params;
-      const response = await orderTour.findOne({_id: id});
-      console.log('response ', response);
+      const { id } = req.params;
+      const response = await orderTour.findOne({ _id: id });
+      console.log("response ", response);
       res.status(200).json(response);
     } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+
+  onlyUpdateOrderTour: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { assyneBy } = req.body;
+
+      const response = await orderTour.findOneAndUpdate(
+        { _id: id },
+        { assyneBy: assyneBy },
+        { new: true }
+      );
+      console.log('response new', response);
+      res.status(200).json(response)
+    } catch (error) {
+      console.log('error', error)
       res.status(500).json(error)
     }
-  }
+  },
 };
 
 module.exports = orderController;

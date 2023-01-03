@@ -132,10 +132,8 @@ const hotelController = {
         },
         { new: true }
       );
-      console.log("response new", response);
       res.status(200).json("cap nhat thanh cong");
     } catch (error) {
-      console.log("error try", error);
       res.status(500).json(error);
     }
   },
