@@ -101,7 +101,7 @@ const orderController = {
   getOrderID: async (req, res) => {
     try {
       const {id} = req.params;
-      const response = await orderTour.find({_id: id});
+      const response = await orderTour.findOne({_id: id});
       console.log('response ', response);
       res.status(200).json(response);
     } catch (error) {
