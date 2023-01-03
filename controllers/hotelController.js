@@ -32,6 +32,7 @@ const hotelController = {
         district_id,
         address_detail,
         price,
+        room,
       } = req.body;
       const hotelcreate = await Hotel({
         name,
@@ -42,6 +43,7 @@ const hotelController = {
         district_id,
         address_detail,
         price,
+        room
       });
 
       const response = await hotelcreate.save();

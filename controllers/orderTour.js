@@ -1,4 +1,5 @@
 const orderTour = require("../models/order_tour");
+const user = require("../models/User")
 
 const orderController = {
   createOrderTour: async (req, res) => {
@@ -119,13 +120,31 @@ const orderController = {
         { assyneBy: assyneBy },
         { new: true }
       );
-      console.log('response new', response);
+      const userUpdate = await user.findOneAndUpdate({
+        _id: response.assyneBy
+      },{
+        status: 'available'
+      }, {
+        new: true
+      })
       res.status(200).json(response)
     } catch (error) {
       console.log('error', error)
       res.status(500).json(error)
     }
   },
+
+  getOrderTourOfIdHDV: async (req, res) => {
+    try {
+      const {id} = req.params;
+      const response = await orderTour.find({assyneBy: id});
+      console.log('response', response);
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(500).json(error)
+    }
+  }
+
 };
 
 module.exports = orderController;

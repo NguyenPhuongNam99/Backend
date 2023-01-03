@@ -5,6 +5,17 @@ const imageSchema = new mongoose.Schema({
   image: String,
 });
 
+const roomSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  price: String,
+  capacity: Number,
+  status: String
+})
+
 const hotelSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -35,6 +46,8 @@ const hotelSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  room: [roomSchema]
 });
 
 hotelSchema.plugin(AutoIncrement, { inc_field: "idHotel" });

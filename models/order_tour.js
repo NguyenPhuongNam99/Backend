@@ -6,7 +6,7 @@ const orderTourSchema = new mongoose.Schema({
   tour_id: Number,
   voucher_id: Number,
   total_price: Number,
-  // status:
+  status: String,
   // status varchar //CREATED || ONGOING || ENDED: trạng thái chuyến đi (mới tạo || đang diễn ra || kết thúc)
   payment_state: String,
   assyneBy: Number,
