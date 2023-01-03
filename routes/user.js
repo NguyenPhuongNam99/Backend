@@ -7,5 +7,6 @@ router.get("/getAllUsers",middlewareController.veryfyToken, userController.getAl
 router.delete("/:id",middlewareController.verifyTokenAndAdmin,  userController.deleteUser);
 router.get("/userId/:id", middlewareController.veryfyToken, userController.getUserId);
 router.put("/updateUser/:id", middlewareController.veryfyToken, userController.updateUserInfo);
+router.get("/getUserHDV", middlewareController.veryfyToken, userController.getUserHDV);
 
 module.exports = router;

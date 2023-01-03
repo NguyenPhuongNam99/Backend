@@ -6,7 +6,9 @@ const roomHotel = new mongoose.Schema({
     floor: Number,
     price: Number,
     capacity: Number,
-    is_available: Boolean
+    is_available: Boolean,
+    room: []
+    
 }, {inc_field: 'idRoom'})
 
 module.exports = mongoose.model("RoomHotel", roomHotel)
