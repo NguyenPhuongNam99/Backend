@@ -9,6 +9,6 @@ router.delete('/deleteOrderTour/:id', middlewareController.veryfyToken, orderCon
 router.put('/updateOrderTour/:id', middlewareController.veryfyToken, orderController.updateOrderTour);
 router.get('/getOrderID/:id', middlewareController.veryfyToken, orderController.getOrderID);
 router.put('/onlyUpdateOrderTour/:id', middlewareController.veryfyToken, orderController.onlyUpdateOrderTour);
-router.get('/getOrderTourOfIdHDV/:id', middlewareController.veryfyToken, orderController.getOrderTourOfIdHDV);
+router.get('/getOrderTourOfIdHDV/:id', orderController.getOrderTourOfIdHDV);
 
 module.exports = router;
