@@ -76,6 +76,7 @@ const hotelController = {
         district_id,
         address_detail,
         price,
+        room
       } = req.body;
       const { id } = req.params;
 
@@ -90,6 +91,7 @@ const hotelController = {
           district_id,
           address_detail,
           price,
+          room
         },
         { new: true }
       );
