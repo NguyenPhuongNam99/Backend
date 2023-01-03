@@ -6,14 +6,15 @@ const imageSchema = new mongoose.Schema({
 });
 
 const roomSchema = new mongoose.Schema({
-  name: {
+  room_name: {
     type: String,
     required: true,
     unique: true,
   },
-  price: String,
-  capacity: Number,
-  status: String
+  room_price: String,
+  room_quantity: Number,
+  status: String,
+  key: String
 })
 
 const hotelSchema = new mongoose.Schema({

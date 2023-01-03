@@ -115,6 +115,8 @@ const orderController = {
       const { id } = req.params;
       const { assyneBy } = req.body;
 
+      console.log('assyneBy', assyneBy)
+
       const response = await orderTour.findOneAndUpdate(
         { _id: id },
         { assyneBy: assyneBy },
