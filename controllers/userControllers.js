@@ -66,7 +66,7 @@ const userController = {
   getUserHDV: async (req, res) => {
     try {
       
-      const response = await User.find({role: 'hdv' , status: 'available'});
+      const response = await User.find({role: 'hdv' , status: 'not-available'});
       console.log('response', response);
       res.status(200).json(response)
 
