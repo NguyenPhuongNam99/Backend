@@ -1,6 +1,7 @@
 const orderTour = require("../models/order_tour");
 const user = require("../models/User");
-const Tour = require('../models/tour')
+const Tour = require("../models/tour");
+const City = require("../models/City");
 
 const orderController = {
   createOrderTour: async (req, res) => {
@@ -116,58 +117,75 @@ const orderController = {
       const { id } = req.params;
       const { assyneBy } = req.body;
 
-      console.log('assyneBy', assyneBy)
+      console.log("assyneBy", assyneBy);
 
       const response = await orderTour.findOneAndUpdate(
         { _id: id },
         { assyneBy: assyneBy },
         { new: true }
       );
-      const userUpdate = await user.findOneAndUpdate({
-        _id: response.assyneBy
-      },{
-        status: 'available'
-      }, {
-        new: true
-      })
-      res.status(200).json(response)
+      const userUpdate = await user.findOneAndUpdate(
+        {
+          _id: response.assyneBy,
+        },
+        {
+          status: "available",
+        },
+        {
+          new: true,
+        }
+      );
+      res.status(200).json(response);
     } catch (error) {
-      console.log('error', error)
-      res.status(500).json(error)
+      console.log("error", error);
+      res.status(500).json(error);
     }
   },
 
   getOrderTourOfIdHDV: async (req, res) => {
     try {
-      const {id} = req.params;
-      const response = await orderTour.find({assyneBy: id});
-      console.log('response', response);
+      const { id } = req.params;
+      const response = await orderTour.find({ assyneBy: id });
+      console.log("response", response);
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json(error)
+      res.status(500).json(error);
     }
   },
 
   getOrderTourofUser: async (req, res) => {
     try {
-      const {id} = req.params;
-      const response = await orderTour.find({user_id: id});
+      const { id } = req.params;
+      const response = await orderTour.find({ user_id: id });
       const responseTour = await Tour.find();
-      console.log('response', response);
+      const cityData = await City.find();
+
       const emptyArray = [];
       response.map((item) => {
-        for(var i = 0 ;i <responseTour.length;i++){
-          if(item.tour_id === Number(responseTour[i].idTour))
-          emptyArray.push({
-            item: responseTour[i]
-          })
+        for (var i = 0; i < responseTour.length; i++) {
+          if (item.tour_id === Number(responseTour[i].idTour))
+            emptyArray.push({
+              item: responseTour[i],
+            });
         }
-      })
-      res.status(200).json(emptyArray)
+      });
+
+      const formatCitydata = [];
+      emptyArray.map((itemFormat) => {
+        for (var i = 0; i < cityData.length; i++) {
+          if (Number(itemFormat.item.city) === Number(cityData[i].cityId)) {
+            formatCitydata.push({
+              item: itemFormat,
+              cityName: cityData[i].name,
+            });
+          }
+        }
+      });
+      res.status(200).json(formatCitydata);
     } catch (error) {
-      res.status(500).json(error)
+      res.status(500).json(error);
     }
-  }
+  },
 };
 
 module.exports = orderController;
