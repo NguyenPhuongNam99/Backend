@@ -1,5 +1,6 @@
 const orderTour = require("../models/order_tour");
-const user = require("../models/User")
+const user = require("../models/User");
+const Tour = require('../models/tour')
 
 const orderController = {
   createOrderTour: async (req, res) => {
@@ -151,8 +152,18 @@ const orderController = {
     try {
       const {id} = req.params;
       const response = await orderTour.find({user_id: id});
+      const responseTour = await Tour.find();
       console.log('response', response);
-      res.status(200).json(response)
+      const emptyArray = [];
+      response.map((item) => {
+        for(var i = 0 ;i <responseTour.length;i++){
+          if(item.tour_id === Number(responseTour[i].idTour))
+          emptyArray.push({
+            item: responseTour[i]
+          })
+        }
+      })
+      res.status(200).json(emptyArray)
     } catch (error) {
       res.status(500).json(error)
     }
