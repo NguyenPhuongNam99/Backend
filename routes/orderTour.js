@@ -10,5 +10,6 @@ router.put('/updateOrderTour/:id', middlewareController.veryfyToken, orderContro
 router.get('/getOrderID/:id', middlewareController.veryfyToken, orderController.getOrderID);
 router.put('/onlyUpdateOrderTour/:id', middlewareController.veryfyToken, orderController.onlyUpdateOrderTour);
 router.get('/getOrderTourOfIdHDV/:id', orderController.getOrderTourOfIdHDV);
+router.get("/getOrderTourofUser/:id", orderController.getOrderTourofUser);
 
 module.exports = router;

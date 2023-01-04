@@ -11,5 +11,6 @@ router.get("/getTourSchedule/:id", tourController.getTourSchedule);
 router.delete("/deleteTourSchedule/:id", tourController.deleteTourSchedule);
 router.get("/getTourId", middlewareController.veryfyToken, tourController.getTourId);
 router.get("/getAllTourOfCity/:id", tourController.getAllTourOfCity);
+router.get("/getTourOfId/:id", middlewareController.veryfyToken, tourController.getTourOfId);
 
 module.exports = router;

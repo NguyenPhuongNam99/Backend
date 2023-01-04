@@ -16,6 +16,7 @@ const tourController = {
         hotel_id,
         is_show,
         time_line,
+        is_popular,
       } = req.body;
 
       const newCreate = await Tour({
@@ -28,6 +29,7 @@ const tourController = {
         restaurant_id,
         hotel_id,
         is_show,
+        is_popular
       });
       const creatTour = await newCreate.save();
 
@@ -63,6 +65,7 @@ const tourController = {
         hotel_id,
         is_show,
         time_line,
+        is_popular
       } = req.body;
 
       await Tour.findOneAndUpdate(
@@ -77,6 +80,7 @@ const tourController = {
           restaurant_id,
           hotel_id,
           is_show,
+          is_popular
         },
         { new: true }
       );
@@ -290,6 +294,18 @@ const tourController = {
         });
     } catch (error) {
       res.status(500).json(error);
+    }
+  },
+
+  getTourOfId: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const response = await Tour.findOne({ _id: id });
+      console.log('responsse', response)
+      res.status(200).json(response)
+    } catch (error) {
+      console.log('error', error);
+      res.status(500).json(error)
     }
   },
 };

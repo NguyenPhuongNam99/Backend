@@ -145,8 +145,18 @@ const orderController = {
     } catch (error) {
       res.status(500).json(error)
     }
-  }
+  },
 
+  getOrderTourofUser: async (req, res) => {
+    try {
+      const {id} = req.params;
+      const response = await orderTour.find({user_id: id});
+      console.log('response', response);
+      res.status(200).json(response)
+    } catch (error) {
+      res.status(500).json(error)
+    }
+  }
 };
 
 module.exports = orderController;

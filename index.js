@@ -115,7 +115,6 @@ app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
 //upload file cloduinary
 app.post("/uploadImageCloud", uploadCloudDinary.single("upload"), (req, res) => {
   try {
-    console.log('upload image', req.body.upload)
     res.status(200).json({
       uploaded: true,
       url: req?.file?.path,

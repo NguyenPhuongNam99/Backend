@@ -54,7 +54,8 @@ const tourSchema = new mongoose.Schema({
     is_show: {
         type: Boolean,
         required: true
-    }
+    },
+    is_popular: String
 
 })
 
