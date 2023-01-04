@@ -146,8 +146,20 @@ const orderController = {
     try {
       const { id } = req.params;
       const response = await orderTour.find({ assyneBy: id });
-      console.log("response", response);
-      res.status(200).json(response);
+      const responseTour = await Tour.find();
+      const emptyData = [];
+
+      response.map((item) => {
+        for (var i = 0; i < responseTour.length; i++) {
+          if (Number(item.tour_id) === Number(responseTour[i].idTour)) {
+            emptyData.push({
+              item: item,
+              tourDefault: responseTour[i]
+            });
+          }
+        }
+      });
+      res.status(200).json(emptyData);
     } catch (error) {
       res.status(500).json(error);
     }
