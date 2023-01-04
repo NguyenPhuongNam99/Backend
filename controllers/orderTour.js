@@ -2,6 +2,8 @@ const orderTour = require("../models/order_tour");
 const user = require("../models/User");
 const Tour = require("../models/tour");
 const City = require("../models/City");
+const hotel = require('../models/hotel');
+const restaurant = require('../models/restaurant');
 
 const orderController = {
   createOrderTour: async (req, res) => {
@@ -148,13 +150,35 @@ const orderController = {
       const response = await orderTour.find({ assyneBy: id });
       const responseTour = await Tour.find();
       const emptyData = [];
+      const cityResponse = await City.find();
+      const hotelResponse = await hotel.find();
+      let cityEmpty = "";
+      let hotelData = ''
+      // console.log('cityr res', cityResponse)
 
       response.map((item) => {
         for (var i = 0; i < responseTour.length; i++) {
           if (Number(item.tour_id) === Number(responseTour[i].idTour)) {
+            cityResponse.filter((itemCity) => {
+              if (Number(itemCity.cityId) === Number(responseTour[i].city)) {
+                cityEmpty = itemCity.name;
+              }
+            });
+
+            //da xong nhung co ve data tout dang ko khop vi data hotel xoa di nhung hotel_id van auto tang
+            hotelResponse.filter((itemHotel) => {
+              console.log('item',itemHotel.idHotel,responseTour[i].hotel_id)
+              if (Number(itemHotel.idHotel) === Number(responseTour[i].hotel_id)) {
+                hotelData = itemHotel.name;
+              }
+            });
+         
+
             emptyData.push({
               item: item,
-              tourDefault: responseTour[i]
+              tourDefault: responseTour[i],
+              cityName: cityEmpty,
+              hotelName: hotelData
             });
           }
         }
