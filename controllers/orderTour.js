@@ -2,8 +2,8 @@ const orderTour = require("../models/order_tour");
 const user = require("../models/User");
 const Tour = require("../models/tour");
 const City = require("../models/City");
-const hotel = require('../models/hotel');
-const restaurant = require('../models/restaurant');
+const hotel = require("../models/hotel");
+const restaurant = require("../models/restaurant");
 
 const orderController = {
   createOrderTour: async (req, res) => {
@@ -153,7 +153,8 @@ const orderController = {
       const cityResponse = await City.find();
       const hotelResponse = await hotel.find();
       let cityEmpty = "";
-      let hotelData = ''
+      let hotelData = "";
+      let visitLocation = {};
       // console.log('cityr res', cityResponse)
 
       response.map((item) => {
@@ -162,23 +163,29 @@ const orderController = {
             cityResponse.filter((itemCity) => {
               if (Number(itemCity.cityId) === Number(responseTour[i].city)) {
                 cityEmpty = itemCity.name;
+                visitLocation = {
+                  lat: itemCity.lat,
+                  lng: itemCity.lng,
+                };
               }
             });
 
             //da xong nhung co ve data tout dang ko khop vi data hotel xoa di nhung hotel_id van auto tang
             hotelResponse.filter((itemHotel) => {
-              console.log('item',itemHotel.idHotel,responseTour[i].hotel_id)
-              if (Number(itemHotel.idHotel) === Number(responseTour[i].hotel_id)) {
+              console.log("item", itemHotel.idHotel, responseTour[i].hotel_id);
+              if (
+                Number(itemHotel.idHotel) === Number(responseTour[i].hotel_id)
+              ) {
                 hotelData = itemHotel.name;
               }
             });
-         
 
             emptyData.push({
               item: item,
               tourDefault: responseTour[i],
               cityName: cityEmpty,
-              hotelName: hotelData
+              hotelName: hotelData,
+              visitLocation: visitLocation,
             });
           }
         }
@@ -223,25 +230,28 @@ const orderController = {
     }
   },
 
-  onlyUpdateStatusTour: async (req,res) => {
+  onlyUpdateStatusTour: async (req, res) => {
     try {
-      const {id} = req.params;
-      const {status} = req.body;
-      const response = await orderTour.findOneAndUpdate({
-        _id:id
-      },{
-        status: status
-      },{
-        new: true
-      })
-      console.log('response', response)
-      res.status(200).json(response)
-      
+      const { id } = req.params;
+      const { status } = req.body;
+      const response = await orderTour.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          status: status,
+        },
+        {
+          new: true,
+        }
+      );
+      console.log("response", response);
+      res.status(200).json(response);
     } catch (error) {
-      console.log('error', error);
-      res.status(500).json(error)
+      console.log("error", error);
+      res.status(500).json(error);
     }
-  }
+  },
 };
 
 module.exports = orderController;
