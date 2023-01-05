@@ -209,6 +209,7 @@ const orderController = {
           if (item.tour_id === Number(responseTour[i].idTour))
             emptyArray.push({
               item: responseTour[i],
+              statusTour: item.status
             });
         }
       });
