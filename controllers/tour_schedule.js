@@ -55,6 +55,18 @@ const tourScheduleController = {
         } catch (error) {
             res.status(500).json('cap nhat that bai')
         }
+    },
+
+    getTourScheduleID: async (req, res) => {
+        try {
+            const {id} = req.params;
+            const response = await tour_schedule.find({tour_id: id})
+            console.log('response', response);
+            res.status(200).json(response)
+        } catch (error) {
+            console.log('error', error)
+            res.status(500).json(error)
+        }
     }
 }
 

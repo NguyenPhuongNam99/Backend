@@ -7,5 +7,6 @@ router.post('/createTourSchedule', middlewareController.veryfyToken, tour_schedu
 router.get('/getAllTourSchedule', middlewareController.veryfyToken, tour_schedule.getALLTourSchedule)
 router.put('/updateTourSchedule/:id', middlewareController.veryfyToken, tour_schedule.updateTourSchedule)
 router.delete('/deleteTourSchedule/:id', middlewareController.veryfyToken, tour_schedule.deleteTourSchedule)
+router.get('/getTourScheduleID/:id', middlewareController.veryfyToken, tour_schedule.getTourScheduleID)
 
 module.exports = router;
