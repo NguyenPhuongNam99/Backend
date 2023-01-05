@@ -222,6 +222,25 @@ const orderController = {
       res.status(500).json(error);
     }
   },
+
+  onlyUpdateStatusTour: async (req,res) => {
+    try {
+      const {id} = req.params;
+      const response = await orderTour.findOneAndUpdate({
+        _id:id
+      },{
+        status: 'xác nhận'
+      },{
+        new: true
+      })
+      console.log('response', response)
+      res.status(200).json(response)
+      
+    } catch (error) {
+      console.log('error', error);
+      res.status(500).json(error)
+    }
+  }
 };
 
 module.exports = orderController;
