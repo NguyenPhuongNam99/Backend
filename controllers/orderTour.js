@@ -226,10 +226,11 @@ const orderController = {
   onlyUpdateStatusTour: async (req,res) => {
     try {
       const {id} = req.params;
+      const {status} = req.body;
       const response = await orderTour.findOneAndUpdate({
         _id:id
       },{
-        status: 'xác nhận'
+        status: status
       },{
         new: true
       })
