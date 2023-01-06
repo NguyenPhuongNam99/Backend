@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const imageSchema = new mongoose.Schema({
-    image: String
-})
-
 
 const reviewSchema = new mongoose.Schema({
     user_id: Number,
@@ -13,11 +9,10 @@ const reviewSchema = new mongoose.Schema({
         required: true,
         minlength: 1,
     },
-    images: [imageSchema],
-    rate_star: Number,
-    type: String, ///TYpe: Tour, Hotel, Restaurant
-    target_id: Number// toud_id || hotel_id || restaurant_id: doi tuong review
-
+    rate_star: String,
+    // type: String, ///TYpe: Tour, Hotel, Restaurant
+    toud_id: Number,// toud_id || hotel_id || restaurant_id: doi tuong review
+    title: String
 })
 
 reviewSchema.plugin(AutoIncrement, {inc_field: 'idReview'})
