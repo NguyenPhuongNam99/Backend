@@ -14,7 +14,8 @@ const roomSchema = new mongoose.Schema({
   room_price: String,
   room_quantity: Number,
   room_status: String,
-  key: String
+  key: String,
+  room_description: String
 })
 
 const hotelSchema = new mongoose.Schema({
