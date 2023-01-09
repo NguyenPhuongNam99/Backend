@@ -209,7 +209,7 @@ const orderController = {
           if (item.tour_id === Number(responseTour[i].idTour))
             emptyArray.push({
               item: responseTour[i],
-              statusTour: item.status
+              statusTour: item.status,
             });
         }
       });
@@ -234,7 +234,7 @@ const orderController = {
   onlyUpdateStatusTour: async (req, res) => {
     try {
       const { id } = req.params;
-      const { status } = req.body;
+      const { status, userHDVID } = req.body;
       const response = await orderTour.findOneAndUpdate(
         {
           _id: id,
@@ -246,6 +246,26 @@ const orderController = {
           new: true,
         }
       );
+
+      console.log("responseee", response);
+
+      const checkStauts = String(status) === "finish" ? true : false;
+
+      if (checkStauts) {
+        const response = await User.findOneAndUpdate(
+          {
+            _id: userHDVID,
+          },
+          {
+            status: "not-available",
+          },
+          {
+            new: true,
+          }
+        );
+      } else {
+        return;
+      }
       console.log("response", response);
       res.status(200).json(response);
     } catch (error) {
