@@ -247,12 +247,10 @@ const orderController = {
         }
       );
 
-      console.log("responseee", response);
-
       const checkStauts = String(status) === "finish" ? true : false;
 
       if (checkStauts) {
-        const response = await User.findOneAndUpdate(
+        const responseUser = await user.findOneAndUpdate(
           {
             _id: userHDVID,
           },
@@ -263,8 +261,9 @@ const orderController = {
             new: true,
           }
         );
+
+        console.log('response user', responseUser)
       } 
-      console.log("response", response);
       res.status(200).json(response);
     } catch (error) {
       console.log("error", error);
