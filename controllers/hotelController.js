@@ -141,6 +141,30 @@ const hotelController = {
       res.status(500).json(error);
     }
   },
+
+  updateRoomStatus: async (req, res) => {
+   try {
+     const {id, idRoom} = req.body;
+    // const hotelResponse = await Hotel.findOne({_id:id});
+    // console.log('hot', hotelResponse)
+    // const roomStatus = hotelResponse.room.filter((item) => item._id == idRoom);
+    // console.log
+    // const mergeSrray = roomStatus[0].room_status
+
+    Hotel.update({'_id': id , 'room._id':idRoom},{
+      $set: {
+        'room.$.room_status':true
+      }
+    },
+    function(err, numAffected){
+      console.log('err', err);
+      console.log('numffAffected', numAffected)
+    })
+    res.status(200).json('success')
+   } catch (error) {
+    res.status(500).json(error)
+   }
+  }
 };
 
 module.exports = hotelController;

@@ -200,6 +200,8 @@ const tourController = {
                 return;
               }
             });
+// item.filter((dataFilter) => String(dataFilter.is_popular) === 'true')
+            console.log('item name0', String(item.is_show) === 'true')
             const filterData = response.filter((item) => item !== undefined);
 
             // const getCityName = await city.findOne({ cityId: item.city });
@@ -217,11 +219,13 @@ const tourController = {
               namelat: findNameCIty[0]?.lat,
               namelng: findNameCIty[0]?.lng,
             });
+
+           
           });
           return dataEmpty;
         })
         .then((data) => {
-          // console.log('data newwww', data)
+         
           res.status(200).json(data);
         })
         .catch((error) => {
