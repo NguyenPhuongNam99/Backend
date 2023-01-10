@@ -3,9 +3,9 @@ const blog = require('../models/blog');
 const blogController = {
     createBlog: async (req, res) => {
         try {
-            const {name, thumbnail,decription } = req.body;
+            const {title, thumbnail,decription } = req.body;
             const response = await blog({
-                name,
+                title,
                 decription,
                 thumbnail
             }).save();
