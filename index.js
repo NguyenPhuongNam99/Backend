@@ -20,6 +20,7 @@ const uploadnew = require("./controllers/upload");
 const uploadCloudDinary = require("./middlewares/cloudinary");
 const cloduinary = require('cloudinary');
 const city = require("./routes/city")
+const blog = require("./routes/blog")
 
 // const conn = mongoose.connection;
 // conn.once("open", function () {
@@ -97,6 +98,7 @@ app.use("/v1/room", room);
 app.use("/v1/tourSchedule", tourSchedule);
 app.use("/v1/city", city)
 app.use("/file", upload);
+app.use("/blog", blog)
 
 //upload file ckeditor
 app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
