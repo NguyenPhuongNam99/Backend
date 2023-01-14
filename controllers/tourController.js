@@ -4,6 +4,9 @@ const city = require("../models/City");
 const review = require('../models/review');
 const {flat} = require('lodash')
 const _ = require('lodash')
+const tourFavorite = require('../models/tourFavorite');
+
+const router = require('express').Router();
 
 const tourController = {
   creatTour: async (req, res) => {
@@ -370,6 +373,132 @@ const tourController = {
           const uniqBy = _.uniqBy(tmpArray, "item._id")
          
           res.status(200).json(uniqBy);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+
+  getTourForOptionPerson: async (req, res) => {
+    try {
+      const {price, place} = req.body;
+      const dataEmpty = [];
+      const dataTourValue = await Tour.find();
+      const dataTourSchedule = await TourSchedule.find();
+      const add2 = (x) => x + 2;
+      const cityResponse = await city.find();
+
+      Promise.resolve(dataTourValue)
+        .then((dataTour) => {
+          dataTour.map(async (item) => {
+            const response = dataTourSchedule.map((itemSchedule) => {
+              if (item.idTour === itemSchedule.tour_id) {
+                return itemSchedule;
+              } else {
+                return;
+              }
+            });
+            // item.filter((dataFilter) => String(dataFilter.is_popular) === 'true')
+            const filterData = response.filter((item) => item !== undefined);
+
+            // const getCityName = await city.findOne({ cityId: item.city });
+
+            // console.log('get city', getCityName?.name)
+
+            const findNameCIty = cityResponse.filter(
+              (itemCity) => Number(itemCity.cityId) === Number(item.city)
+            );
+
+            dataEmpty.push({
+              item: item,
+              time_line: filterData,
+              nameCIty: findNameCIty[0].name,
+              namelat: findNameCIty[0]?.lat,
+              namelng: findNameCIty[0]?.lng,
+            });
+
+
+          });
+          return dataEmpty;
+        })
+        .then((data) => {
+          console.log('price', place, price)
+          const resposeData = data.filter((itemData) => {
+            if(itemData.item.city === place &&   itemData.item.price< price) {
+              return itemData;
+            }
+          })
+
+          console.log('response data', resposeData)
+          res.status(200).json(resposeData);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+
+  getTourFavouriteOfAllTour : async (req, res) => {
+    try {
+      const dataEmpty = [];
+      const dataTourValue = await Tour.find();
+      const dataTourSchedule = await TourSchedule.find();
+      const add2 = (x) => x + 2;
+      const cityResponse = await city.find();
+      const {id} = req.params;
+      const userData = await tourFavorite.find({user_id: id});
+
+      Promise.resolve(dataTourValue)
+        .then((dataTour) => {
+          dataTour.map(async (item) => {
+            const response = dataTourSchedule.map((itemSchedule) => {
+              if (item.idTour === itemSchedule.tour_id) {
+                return itemSchedule;
+              } else {
+                return;
+              }
+            });
+            // item.filter((dataFilter) => String(dataFilter.is_popular) === 'true')
+            const filterData = response.filter((item) => item !== undefined);
+
+            // const getCityName = await city.findOne({ cityId: item.city });
+
+            // console.log('get city', getCityName?.name)
+
+            const findNameCIty = cityResponse.filter(
+              (itemCity) => Number(itemCity.cityId) === Number(item.city)
+            );
+
+            dataEmpty.push({
+              item: item,
+              time_line: filterData,
+              nameCIty: findNameCIty[0].name,
+              namelat: findNameCIty[0]?.lat,
+              namelng: findNameCIty[0]?.lng,
+            });
+
+
+          });
+          return dataEmpty;
+        })
+        .then((data) => {
+
+          const response = userData.map((itemUser) => {
+            const dataTourAll = data.map((itemDataDb) => {
+              if(itemDataDb.item.idTour == itemUser._idTour){
+                return itemDataDb;
+              }
+            })
+            return dataTourAll
+          })
+
+          const flatData = response.flat(1)
+          res.status(200).json(_.uniqBy(flatData.filter((itemNull) => itemNull), "item._id"));
         })
         .catch((error) => {
           console.log("error", error);

@@ -13,5 +13,8 @@ router.get("/getTourId", middlewareController.veryfyToken, tourController.getTou
 router.get("/getAllTourOfCity/:id", tourController.getAllTourOfCity);
 router.get("/getTourOfId/:id", middlewareController.veryfyToken, tourController.getTourOfId);
 router.get("/getTourPopular", middlewareController.veryfyToken, tourController.getTourPopular);
+router.post("/getTourForOptionPerson", middlewareController.veryfyToken, tourController.getTourForOptionPerson);
+router.get("/getTourFavouriteOfAllTour/:id", middlewareController.veryfyToken, tourController.getTourFavouriteOfAllTour);
+
 
 module.exports = router;

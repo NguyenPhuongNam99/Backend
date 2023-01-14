@@ -54,7 +54,7 @@ const userController = {
     try {
       const { id } = req.params;
 
-      const response = await User.find({ _id: id });
+      const response = await User.findOne({ _id: id });
       console.log("response new", response);
       res.status(200).json(response);
     } catch (error) {
