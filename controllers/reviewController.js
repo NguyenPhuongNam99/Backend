@@ -3,14 +3,15 @@ const reviewModel = require("../models/review");
 const reviewController = {
   createReview: async (req, res) => {
     try {
-      const { user_id, content, rate_star, toud_id, title } = req.body;
-
+      const { user_id, content, rate_star, tour_id, title,objectIdTour  } = req.body;
+    
       const response = await reviewModel({
         user_id,
         content,
         rate_star,
-        toud_id,
+        tour_id,
         title,
+        objectIdTour,
       }).save();
       console.log("response", response);
       res.status(200).json(response);
@@ -42,15 +43,16 @@ const reviewController = {
   updateReview: async (req, res) => {
     try {
       const { id } = req.params;
-      const { user_id, content, rate_star, toud_id, title } = req.body;
+      const { user_id, content, rate_star, tour_id, title, objectIdTour } = req.body;
       await reviewModel.findOneAndUpdate(
         { idReview: id },
         {
           user_id,
           content,
           rate_star,
-          toud_id,
+          tour_id,
           title,
+          objectIdTour,
         },
         { new: true }
       );

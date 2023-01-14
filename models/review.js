@@ -11,8 +11,9 @@ const reviewSchema = new mongoose.Schema({
     },
     rate_star: String,
     // type: String, ///TYpe: Tour, Hotel, Restaurant
-    toud_id: Number,// toud_id || hotel_id || restaurant_id: doi tuong review
-    title: String
+    tour_id: Number,// toud_id || hotel_id || restaurant_id: doi tuong review
+    title: String,
+    objectIdTour: String
 })
 
 reviewSchema.plugin(AutoIncrement, {inc_field: 'idReview'})
