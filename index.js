@@ -22,6 +22,7 @@ const cloduinary = require('cloudinary');
 const city = require("./routes/city")
 const blog = require("./routes/blog")
 const tourFavourite = require("./routes/tourFavourite");
+const stripe = require("./routes/stripe");
 
 // const conn = mongoose.connection;
 // conn.once("open", function () {
@@ -99,8 +100,9 @@ app.use("/v1/room", room);
 app.use("/v1/tourSchedule", tourSchedule);
 app.use("/v1/city", city)
 app.use("/file", upload);
-app.use("/v1/blog", blog)
-app.use("/v1/tourFavourite", tourFavourite)
+app.use("/v1/blog", blog);
+app.use("/v1/tourFavourite", tourFavourite);
+app.use("/v1/stripe", stripe);
 
 //upload file ckeditor
 app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
