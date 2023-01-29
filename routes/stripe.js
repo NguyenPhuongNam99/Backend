@@ -90,6 +90,8 @@ router.post('/create-payment-intent', async (req, res) => {
         clientSecret: paymentIntent.client_secret,
         nextAction: paymentIntent.next_action,
       });
+
+    
     } catch (e) {
         console.log('e', e)
       return res.status(400).send({
