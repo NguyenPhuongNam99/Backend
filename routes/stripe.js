@@ -84,12 +84,12 @@ router.post('/create-payment-intent', async (req, res) => {
     // [0] https://stripe.com/docs/api/payment_intents/create
     try {
       const paymentIntent = await stripe.paymentIntents.create(params);
-  
+      console.log('vvv', paymentIntent?.charges?.data[0]?.receipt_url)
       // Send publishable key and PaymentIntent details to client
       res.send({
         clientSecret: paymentIntent.client_secret,
         nextAction: paymentIntent.next_action,
-        // receipt_url: paymentIntent.charges.data[0].receipt_url
+        receipt_url: paymentIntent?.charges?.data[0]?.receipt_url
       });
 
     
