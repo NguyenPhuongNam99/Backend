@@ -84,12 +84,20 @@ router.post('/create-payment-intent', async (req, res) => {
     // [0] https://stripe.com/docs/api/payment_intents/create
     try {
       const paymentIntent = await stripe.paymentIntents.create(params);
-      console.log('vvv', paymentIntent?.charges?.data[0]?.receipt_url)
+
+      // const responseStripe = await stripe.charges.create({
+      //   amount: 2000,
+      //   currency: "usd",
+      //   source: "tok_mastercard", // obtained with Stripe.js
+      //   metadata: {'order_id': '6735'}
+      // });
+
+      // console.log('resss', responseStripe)
+  
       // Send publishable key and PaymentIntent details to client
       res.send({
         clientSecret: paymentIntent.client_secret,
         nextAction: paymentIntent.next_action,
-        receipt_url: paymentIntent?.charges?.data[0]?.receipt_url
       });
 
     

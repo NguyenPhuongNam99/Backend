@@ -5,6 +5,8 @@ const City = require("../models/City");
 const hotel = require("../models/hotel");
 const restaurant = require("../models/restaurant");
 const nodemailer = require('nodemailer')
+const Stripe = require('stripe');
+const stripe = Stripe('sk_test_51LKCh8HBvb3MzaZzM1Lfu4hxjb64Fd85TFatKgW9LHfkBvDswOOE562XcU0kHYgLWzBx2V1EgX4A3iuuxJAVuPho0024KYgc2Z');
 
 const orderController = {
   createOrderTour: async (req, res) => {
@@ -22,7 +24,6 @@ const orderController = {
         phoneUser,
         tourName,
         emailUser,
-        receipt_url ///mail link
       } = req.body;
       const response = await new orderTour({
         user_id,
@@ -40,6 +41,15 @@ const orderController = {
       }).save();
       console.log("response new", response);
 
+    const responseStripe = await stripe.charges.create({
+        amount: total_price,
+        currency: "usd",
+        source: "tok_mastercard", // obtained with Stripe.js
+        metadata: {'order_id': '6735'}
+      });
+
+      console.log('res', responseStripe.receipt_url)
+
       let mailTransporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -48,7 +58,7 @@ const orderController = {
         }
       })
 
-      const linkweb = receipt_url;
+      const linkweb = responseStripe.receipt_url;
       let details = {
         from: 'quanlyapptravel@gmail.com',
         to: 'nguyenphuongnamtailieu7@gmail.com',
@@ -56,7 +66,7 @@ const orderController = {
         text: 'sub test ting',
         html:
           '<p>Please click on the following link to your receipt:</p>' +
-          `<a href=${linkweb}>Visit W3Schools.com!</a>`
+          `<a href=${linkweb}>Visit Your Receipt!</a>`
 
       }
 
