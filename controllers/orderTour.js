@@ -39,34 +39,34 @@ const orderController = {
       }).save();
       console.log("response new", response);
 
-      // let mailTransporter = nodemailer.createTransport({
-      //   service: 'gmail',
-      //   auth: {
-      //     user: 'quanlyapptravel@gmail.com',
-      //     pass: 'agjmqldodtozbpgt'
-      //   }
-      // })
+      let mailTransporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'quanlyapptravel@gmail.com',
+          pass: 'agjmqldodtozbpgt'
+        }
+      })
 
-      // const linkweb = 'https://www.youtube.com/'
-      // let details = {
-      //   from: 'quanlyapptravel@gmail.com',
-      //   to: 'nguyenphuongnamtailieu7@gmail.com',
-      //   subject: 'testting',
-      //   text: 'sub test ting',
-      //   html:
-      //     '<p>Please click on the following link to verify your email address:</p>' +
-      //     `<a href=${linkweb}>Visit W3Schools.com!</a>`
+      const linkweb = 'https://www.youtube.com/'
+      let details = {
+        from: 'quanlyapptravel@gmail.com',
+        to: 'nguyenphuongnamtailieu7@gmail.com',
+        subject: 'testting',
+        text: 'sub test ting',
+        html:
+          '<p>Please click on the following link to verify your email address:</p>' +
+          `<a href=${linkweb}>Visit W3Schools.com!</a>`
 
-      // }
+      }
 
-      // mailTransporter.sendMail(details, (err) => {
-      //   if (err) {
-      //     console.log('it has error', err)
-      //   }
-      //   else {
-      //     console.log('passs')
-      //   }
-      // })
+      mailTransporter.sendMail(details, (err) => {
+        if (err) {
+          console.log('it has error', err)
+        }
+        else {
+          console.log('passs')
+        }
+      })
 
       res.status(200).json("Dat Tour thanh cong");
 
