@@ -22,6 +22,7 @@ const orderController = {
         phoneUser,
         tourName,
         emailUser,
+        receipt_url ///mail link
       } = req.body;
       const response = await new orderTour({
         user_id,
@@ -47,14 +48,14 @@ const orderController = {
         }
       })
 
-      const linkweb = 'https://www.youtube.com/'
+      const linkweb = receipt_url;
       let details = {
         from: 'quanlyapptravel@gmail.com',
         to: 'nguyenphuongnamtailieu7@gmail.com',
         subject: 'testting',
         text: 'sub test ting',
         html:
-          '<p>Please click on the following link to verify your email address:</p>' +
+          '<p>Please click on the following link to your receipt:</p>' +
           `<a href=${linkweb}>Visit W3Schools.com!</a>`
 
       }
