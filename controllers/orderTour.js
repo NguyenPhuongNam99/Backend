@@ -65,7 +65,7 @@ const orderController = {
         subject: 'Hoá đơn thanh toán Travel OKgo',
         text: 'Hoá đơn thanh toán Travel OKgo',
         html:
-          '<h5>Chúc mừng bạn đã đặt tour thành công</h5>' +
+          '<h3>Chúc mừng bạn đã đặt tour thành công</h3>' +
           '<h4>OKGO chúc bạn có những trải nghiệm vui vẻ trên chuyếnn đi của mình</h4>' +
           '<p>Vui lòng click vào bên dưới để xem hoá đơn thanh toán</p>'+
           `<a href=${linkweb}>Visit Your Receipt!</a>`
