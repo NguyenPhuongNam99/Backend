@@ -1,4 +1,5 @@
 const Hotel = require("../models/hotel");
+const hotelRoomOrder = require("../models/hotel_room_order")
 
 const hotelController = {
   getHotelType: async (req, res) => {
@@ -165,6 +166,33 @@ const hotelController = {
     res.status(500).json(error)
    }
   },
+  updateRoomStatusAndDeleteHotelOrder: async (req, res) => {
+    try {
+      const {id, idRoom, idHotelOrder} = req.body;
+     // const hotelResponse = await Hotel.findOne({_id:id});
+     // console.log('hot', hotelResponse)
+     // const roomStatus = hotelResponse.room.filter((item) => item._id == idRoom);
+     // console.log
+     // const mergeSrray = roomStatus[0].room_status
+ 
+     Hotel.update({'_id': id , 'room._id':idRoom},{
+       $set: {
+         'room.$.room_status':true
+       }
+     },
+
+     function(err, numAffected){
+       console.log('err', err);
+       console.log('numffAffected', numAffected)
+     })
+
+    const response = await hotelRoomOrder.findByIdAndDelete({_id: idHotelOrder})
+
+     res.status(200).json('success')
+    } catch (error) {
+     res.status(500).json(error)
+    }
+   },
 
   getRoomofId: async (req, res) => {
     try {
