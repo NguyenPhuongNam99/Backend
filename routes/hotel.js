@@ -11,7 +11,7 @@ router.get('/getAllHotel', middlewareController.veryfyToken, hotelController.get
 router.get('/:id', middlewareController.veryfyToken, hotelController.getID);
 router.put('/updateOneProperty/:id', middlewareController.veryfyToken, hotelController.updateOneProperty)
 router.put('/updateRoomStatus', middlewareController.veryfyToken, hotelController.updateRoomStatus);
-router.put('/updateRoomStatusAndDeleteHotelOrder', middlewareController.veryfyToken, hotelController.updateRoomStatus);
+router.put('/updateRoomStatusAndDeleteHotelOrder', middlewareController.veryfyToken, hotelController.updateRoomStatusAndDeleteHotelOrder);
 router.get('/getRoomofId/:id', middlewareController.veryfyToken, hotelController.getRoomofId)
 
 module.exports = router;
