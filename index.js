@@ -24,6 +24,7 @@ const blog = require("./routes/blog")
 const tourFavourite = require("./routes/tourFavourite");
 const stripe = require("./routes/stripe");
 const hotelRoomOrder = require('./routes/HotelRoomOrder');
+const dashboard = require('./routes/dashboard')
 
 // const conn = mongoose.connection;
 // conn.once("open", function () {
@@ -105,6 +106,7 @@ app.use("/v1/blog", blog);
 app.use("/v1/tourFavourite", tourFavourite);
 app.use("/v1/stripe", stripe);
 app.use("/v1/hotelRoomOrder", hotelRoomOrder)
+app.use('/v1/dashboard', dashboard)
 
 //upload file ckeditor
 app.post("/uploadImage", uploadnew.single("upload"), (req, res) => {
