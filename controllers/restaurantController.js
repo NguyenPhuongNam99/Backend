@@ -87,6 +87,8 @@ const restaunrantController = {
       res.status(500).json("xoa nha hang that bai");
     }
   },
+
+  
 };
 
 module.exports = restaunrantController;

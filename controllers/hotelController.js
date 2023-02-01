@@ -164,6 +164,17 @@ const hotelController = {
    } catch (error) {
     res.status(500).json(error)
    }
+  },
+
+  getRoomofId: async (req, res) => {
+    try {
+      const {id} = req.params;
+      const response = await Hotel.findById({_id: id});
+      res.status(200).json(response.room.filter((item) => item.room_status == 'false'))
+    } catch (error) {
+      console.log('error', error);
+      res.status(500).json(error)
+    }
   }
 };
 
