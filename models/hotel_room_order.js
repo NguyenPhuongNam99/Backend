@@ -10,7 +10,8 @@ const hotel_roomOrderSchema = new mongoose.Schema({
       room_status: String,
       room_description: String,
       room_thumbnail: String,
-      user_id: String
+      user_id: String,
+      hotel_id: String
 })
 
 module.exports = mongoose.model('hotelRoomOrder', hotel_roomOrderSchema);
