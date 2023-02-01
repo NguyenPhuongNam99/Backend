@@ -4,6 +4,7 @@ const hotel = require('../models/hotel');
 const blog = require('../models/blog');
 const Voucher = require('../models/Voucher');
 const restaunrant = require('../models/restaurant')
+const orderTour = require('../models/order_tour')
 
 const router = require('express').Router();
 
@@ -40,6 +41,25 @@ router.get('/getAllHDV', async (req, res) => {
         
         const userHdv = await User.find({role: 'hdv'});
         res.status(200).json(userHdv)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+
+
+router.get('/getAllTourDashboard', async (req, res) => {
+    try {
+        
+        const ordertourDashboard = await orderTour.find();
+        const tourDashboard = await tour.find();
+
+        const response = {
+            orderLength: ordertourDashboard.length,
+            tourLength: tourDashboard.length
+        }
+
+        res.status(200).json(response)
+
     } catch (error) {
         res.status(500).json(error)
     }
