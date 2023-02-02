@@ -85,7 +85,7 @@ router.post('/create-payment-intent', async (req, res) => {
 
     const paramsPass = {
       ...params,
-      payment_method: 'pm_card_amex_threeDSecureNotSupported',
+      // payment_method: 'pm_card_amex_threeDSecureNotSupported',
       currency: 'usd',
       confirm: true,
 
