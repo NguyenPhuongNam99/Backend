@@ -27,7 +27,7 @@ router.post('/create-checkout-session', async (req, res) => {
 });
 
 router.post('/create-payment-intent', async (req, res) => {
-    const {paymentMethodType, currency,paymentMethodOptions, amount} = req.body;
+    const {paymentMethodType, currency,paymentMethodOptions, amount, email, phone, name} = req.body;
   
     // Each payment method type has support for different currencies. In order to
     // support many payment method types and several currencies, this server
@@ -92,20 +92,25 @@ router.post('/create-payment-intent', async (req, res) => {
 
     console.log('params res', paramsPass)
     try {
-      const paymentIntent = await stripe.paymentIntents.create(paramsPass);
+      // const paymentIntent = await stripe.paymentIntents.create(paramsPass);
 
       const responseStripe = await stripe.charges.create({
         amount: amount,
         currency: "usd",
         source: "tok_mastercard", // obtained with Stripe.js
         metadata: {'order_id': '6735'},
+        billing_details: {
+          email: email,
+          phone: phone,
+          name: name
+        }
       });
       console.log('res', responseStripe.receipt_url)
   
       // Send publishable key and PaymentIntent details to client
       res.send({
-        clientSecret: paymentIntent.client_secret,
-        nextAction: paymentIntent.next_action,
+        // clientSecret: paymentIntent.client_secret,
+        // nextAction: paymentIntent.next_action,
         receipt_url: responseStripe.receipt_url
       });
 
