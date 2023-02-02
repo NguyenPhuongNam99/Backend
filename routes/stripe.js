@@ -85,36 +85,27 @@ router.post('/create-payment-intent', async (req, res) => {
 
     const paramsPass = {
       ...params,
-      payment_method: 'pm_card_amex_threeDSecureNotSupported',
+      // payment_method: 'pm_card_amex_threeDSecureNotSupported',
       // currency: 'usd',
-      confirm: true,
-      capture_method: "manual"
-
-
+      // confirm: true,
     }
 
     console.log('params res', paramsPass)
     try {
       const paymentIntent = await stripe.paymentIntents.create(paramsPass);
 
-      // const responseStripe = await stripe.charges.create({
-      //   amount: 1000,
-      //   currency: "usd",
-      //   source: "tok_mastercard", // obtained with Stripe.js
-      //   metadata: {'order_id': '6735'},
-      //   email: "namn36535@gmail.com"
-      // });
-      // const charge = await stripe.charges.retrieve(
-      //   'pi_3MWxqUHBvb3MzaZz0glQLf2n'
-      // );
-
-      // console.log('resss', paymentIntent.charges.data[0].receipt_url)
+      const responseStripe = await stripe.charges.create({
+        amount: amount,
+        currency: "usd",
+        source: "tok_mastercard", // obtained with Stripe.js
+        metadata: {'order_id': '6735'},
+      });
+      console.log('res', responseStripe.receipt_url)
   
       // Send publishable key and PaymentIntent details to client
       res.send({
         clientSecret: paymentIntent.client_secret,
         nextAction: paymentIntent.next_action,
-        receipt_url: paymentIntent.charges.data[0].receipt_url
       });
 
     
