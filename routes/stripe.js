@@ -104,13 +104,13 @@ router.post('/create-payment-intent', async (req, res) => {
       //   'pi_3MWxqUHBvb3MzaZz0glQLf2n'
       // );
 
-      console.log('resss', paymentIntent.charges.data[0].receipt_url)
+      // console.log('resss', paymentIntent.charges.data[0].receipt_url)
   
       // Send publishable key and PaymentIntent details to client
       res.send({
         clientSecret: paymentIntent.client_secret,
         nextAction: paymentIntent.next_action,
-        receipt_url: paymentIntent.charges.data[0].receipt_url
+        // receipt_url: paymentIntent.charges.data[0].receipt_url
       });
 
     
