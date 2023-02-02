@@ -23,107 +23,103 @@ router.post('/create-checkout-session', async (req, res) => {
     cancel_url: 'http://localhost:4242/cancel',
   });
 
-  res.send({url: session.url});
+  res.send({ url: session.url });
 });
 
 router.post('/create-payment-intent', async (req, res) => {
-    const {paymentMethodType, currency,paymentMethodOptions, amount, email, phone, name} = req.body;
-  
-    // Each payment method type has support for different currencies. In order to
-    // support many payment method types and several currencies, this server
-    // endpoint accepts both the payment method type and the currency as
-    // parameters.
-    //
-    // Some example payment method types include `card`, `ideal`, and `alipay`.
-    const params = {
-      payment_method_types: [paymentMethodType],
-      amount: amount,
-      currency: 'usd',
-    }
-  
-    // If this is for an ACSS payment, we add payment_method_options to create
-    // the Mandate.
-    if(paymentMethodType === 'acss_debit') {
-      params.payment_method_options = {
-        acss_debit: {
-          mandate_options: {
-            payment_schedule: 'sporadic',
-            transaction_type: 'personal',
-          },
+  const { paymentMethodType, currency, paymentMethodOptions, amount, email, phone, name, customer } = req.body;
+
+  // Each payment method type has support for different currencies. In order to
+  // support many payment method types and several currencies, this server
+  // endpoint accepts both the payment method type and the currency as
+  // parameters.
+  //
+  // Some example payment method types include `card`, `ideal`, and `alipay`.
+  const params = {
+    payment_method_types: [paymentMethodType],
+    amount: amount,
+    currency: 'usd',
+  }
+
+  // If this is for an ACSS payment, we add payment_method_options to create
+  // the Mandate.
+  if (paymentMethodType === 'acss_debit') {
+    params.payment_method_options = {
+      acss_debit: {
+        mandate_options: {
+          payment_schedule: 'sporadic',
+          transaction_type: 'personal',
         },
-      }
-    } else if (paymentMethodType === 'konbini') {
-      /**
-       * Default value of the payment_method_options
-       */
-      params.payment_method_options = {
-        konbini: {
-          product_description: 'Tシャツ',
-          expires_after_days: 3,
-        },
-      }
-    } else if (paymentMethodType === 'customer_balance') {
-      params.payment_method_data = {
-        type: 'customer_balance',
-      }
-      params.confirm = true
-      params.customer = req.body?.customerId || await stripe.customers.create().then(data => data.id)
+      },
     }
-  
+  } else if (paymentMethodType === 'konbini') {
     /**
-     * If API given this data, we can overwride it
+     * Default value of the payment_method_options
      */
-    if (paymentMethodOptions) {
-      params.payment_method_options = paymentMethodOptions
+    params.payment_method_options = {
+      konbini: {
+        product_description: 'Tシャツ',
+        expires_after_days: 3,
+      },
     }
-  
-    // Create a PaymentIntent with the amount, currency, and a payment method type.
-    //
-    // See the documentation [0] for the full list of supported parameters.
-    //
-    // [0] https://stripe.com/docs/api/payment_intents/create
-
-    const paramsPass = {
-      ...params,
-      // payment_method: 'pm_card_amex_threeDSecureNotSupported',
-      // currency: 'usd',
-      // confirm: true,
+  } else if (paymentMethodType === 'customer_balance') {
+    params.payment_method_data = {
+      type: 'customer_balance',
     }
+    params.confirm = true
+    params.customer = req.body?.customerId || await stripe.customers.create().then(data => data.id)
+  }
 
-    console.log('params res', paramsPass)
-    try {
-      // const paymentIntent = await stripe.paymentIntents.create(paramsPass);
+  /**
+   * If API given this data, we can overwride it
+   */
+  if (paymentMethodOptions) {
+    params.payment_method_options = paymentMethodOptions
+  }
 
-      const responseStripe = await stripe.charges.create({
-        amount: amount,
-        currency: "usd",
-        source: "tok_mastercard", // obtained with Stripe.js
-        metadata: {'order_id': '6735'},
-        billing_details: {
-          email: email,
-          phone: phone,
-          name: name
-        }
-      });
-      console.log('res', responseStripe.receipt_url)
-  
-      // Send publishable key and PaymentIntent details to client
-      res.send({
-        // clientSecret: paymentIntent.client_secret,
-        // nextAction: paymentIntent.next_action,
-        receipt_url: responseStripe.receipt_url
-      });
+  // Create a PaymentIntent with the amount, currency, and a payment method type.
+  //
+  // See the documentation [0] for the full list of supported parameters.
+  //
+  // [0] https://stripe.com/docs/api/payment_intents/create
 
-    
-    } catch (e) {
-        console.log('e', e)
-      return res.status(400).send({
-        error: {
-          message: e.message,
-        },
-      });
-    }
-  });
-  
+  const paramsPass = {
+    ...params,
+    // payment_method: 'pm_card_amex_threeDSecureNotSupported',
+    // currency: 'usd',
+    // confirm: true,
+  }
+
+  console.log('params res', email)
+  try {
+    // const paymentIntent = await stripe.paymentIntents.create(paramsPass);
+
+    const responseStripe = await stripe.charges.create({
+      amount: amount,
+      currency: "usd",
+      source: "tok_mastercard", // obtained with Stripe.js
+      metadata: {
+        'order_id': '6735', "email": email, "phone": phone,
+        "name": name,
+      },
+    });
+
+    res.send({
+      // clientSecret: paymentIntent.client_secret,
+      // nextAction: paymentIntent.next_action,
+      receipt_url: responseStripe.receipt_url
+    });
+
+
+  } catch (e) {
+    console.log('e', e)
+    return res.status(400).send({
+      error: {
+        message: e.message,
+      },
+    });
+  }
+});
+
 
 module.exports = router;
