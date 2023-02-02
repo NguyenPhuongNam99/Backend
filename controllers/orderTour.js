@@ -24,6 +24,7 @@ const orderController = {
         phoneUser,
         tourName,
         emailUser,
+        receipt_url,
       } = req.body;
       const response = await new orderTour({
         user_id,
@@ -41,14 +42,14 @@ const orderController = {
       }).save();
       console.log("response new", response);
 
-    const responseStripe = await stripe.charges.create({
-        amount: total_price,
-        currency: "usd",
-        source: "tok_mastercard", // obtained with Stripe.js
-        metadata: {'order_id': '6735'}
-      });
+    // const responseStripe = await stripe.charges.create({
+    //     amount: total_price,
+    //     currency: "usd",
+    //     source: "tok_mastercard", // obtained with Stripe.js
+    //     metadata: {'order_id': '6735'}
+    //   });
 
-      console.log('res', responseStripe.receipt_url)
+      // console.log('res', responseStripe.receipt_url)
 
       let mailTransporter = nodemailer.createTransport({
         service: 'gmail',
@@ -58,7 +59,7 @@ const orderController = {
         }
       })
 
-      const linkweb = responseStripe.receipt_url;
+      const linkweb = receipt_url;
       let details = {
         from: 'quanlyapptravel@gmail.com',
         to: 'nguyenphuongnamtailieu7@gmail.com',
