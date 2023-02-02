@@ -177,7 +177,7 @@ const hotelController = {
  
      Hotel.update({'_id': id , 'room._id':idRoom},{
        $set: {
-         'room.$.room_status':true
+         'room.$.room_status':false
        }
      },
 
