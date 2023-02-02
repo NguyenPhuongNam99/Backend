@@ -106,6 +106,7 @@ router.post('/create-payment-intent', async (req, res) => {
       res.send({
         clientSecret: paymentIntent.client_secret,
         nextAction: paymentIntent.next_action,
+        receipt_url: responseStripe.receipt_url
       });
 
     
