@@ -85,11 +85,15 @@ router.post('/create-payment-intent', async (req, res) => {
 
     const paramsPass = {
       ...params,
-      // payment_method: 'pm_card_amex_threeDSecureNotSupported',
-      currency: 'usd',
+      payment_method: 'pm_card_amex_threeDSecureNotSupported',
+      // currency: 'usd',
       confirm: true,
+      capture_method: "manual"
+
 
     }
+
+    console.log('params res', paramsPass)
     try {
       const paymentIntent = await stripe.paymentIntents.create(paramsPass);
 
