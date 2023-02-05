@@ -1,5 +1,6 @@
 const Hotel = require("../models/hotel");
 const hotelRoomOrder = require("../models/hotel_room_order")
+const _ = require('lodash')
 
 const hotelController = {
   getHotelType: async (req, res) => {
@@ -145,7 +146,7 @@ const hotelController = {
 
   updateRoomStatus: async (req, res) => {
    try {
-     const {id, idRoom} = req.body;
+     const {id, idRoom, user_Room, statusRoom} = req.body;
     // const hotelResponse = await Hotel.findOne({_id:id});
     // console.log('hot', hotelResponse)
     // const roomStatus = hotelResponse.room.filter((item) => item._id == idRoom);
@@ -154,7 +155,9 @@ const hotelController = {
 
     Hotel.update({'_id': id , 'room._id':idRoom},{
       $set: {
-        'room.$.room_status':true
+        'room.$.room_status':statusRoom,
+        'room.$.user_Room':user_Room
+
       }
     },
     function(err, numAffected){
@@ -166,6 +169,30 @@ const hotelController = {
     res.status(500).json(error)
    }
   },
+
+  getAllRoomForUseId: async (req, res) => {
+
+    try {
+      console.log('11')
+      const response = await Hotel.find();
+      const responseUser = response.map((item) => {
+        const itemRoom = item.room.map((itemRoomOrder) => {
+          if(itemRoomOrder.room_status == 'true'){
+            return {
+              itemRoomOrder,
+              idHotel: item._id
+            }
+          }
+        })
+        return itemRoom
+      })
+      res.status(200).json(_.flatten(responseUser).filter((item) => item))
+    } catch (error) {
+      res.status(500).json(error)
+    }
+
+  },
+
   updateRoomStatusAndDeleteHotelOrder: async (req, res) => {
     try {
       const {id, idRoom, idHotelOrder} = req.body;
@@ -177,7 +204,8 @@ const hotelController = {
  
      Hotel.update({'_id': id , 'room._id':idRoom},{
        $set: {
-         'room.$.room_status':false
+         'room.$.room_status':false,
+
        }
      },
 
