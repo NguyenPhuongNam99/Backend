@@ -147,7 +147,7 @@ const hotelController = {
 
   updateRoomStatus: async (req, res) => { //for user
    try {
-     const {id, idRoom, user_Room, statusRoom} = req.body;
+     const {id, idRoom, user_room, statusRoom} = req.body;
     // const hotelResponse = await Hotel.findOne({_id:id});
     // console.log('hot', hotelResponse)
     // const roomStatus = hotelResponse.room.filter((item) => item._id == idRoom);
@@ -157,7 +157,7 @@ const hotelController = {
     Hotel.update({'_id': id , 'room._id':idRoom},{
       $set: {
         'room.$.room_status':statusRoom,
-        'room.$.user_Room':user_Room
+        'room.$.user_room':user_room
 
       }
     },
@@ -205,7 +205,7 @@ const hotelController = {
       const responseUser = response.map((item) => {
         const itemRoom = item.room.map((itemRoomOrder) => {
           // console.log('itemRoomOrder.user_room == ', itemRoomOrder)
-          if(itemRoomOrder.room_status == 'false'){
+          if(itemRoomOrder.room_status == 'xac nhan'){
             return {
               itemRoomOrder,
               idHotel: item._id
@@ -223,6 +223,29 @@ const hotelController = {
       })
       console.log('value ', value)
       res.status(200).json(value.filter((item) => item))
+    } catch (error) {
+      res.status(500).json(error)
+    }
+
+  },
+
+  getAllRoom: async (req, res) => {
+
+    try {
+      console.log('11')
+      const response = await Hotel.find();
+      const responseUser = response.map((item) => {
+        const itemRoom = item.room.map((itemRoomOrder) => {
+          if(itemRoomOrder.room_status == 'true'){
+            return {
+              itemRoomOrder,
+              idHotel: item._id
+            }
+          }
+        })
+        return itemRoom
+      })
+      res.status(200).json(_.flatten(responseUser).filter((item) => item))
     } catch (error) {
       res.status(500).json(error)
     }

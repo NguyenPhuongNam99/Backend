@@ -5,6 +5,7 @@ const router = require('express').Router();
 
 router.get('/getType', middlewareController.veryfyToken,  hotelController.getHotelType);
 router.get('/fill/:id', hotelController.getAllRoomForUseId);
+router.get('/fill/:id', hotelController.getAllRoom);
 router.put('/confirm', hotelController.confirmRoomStatus);
 router.get('/getHomeStayType',middlewareController.veryfyToken ,hotelController.getHomeStayType);
 router.post('/createHotel', middlewareController.veryfyToken, hotelController.createHotel);
