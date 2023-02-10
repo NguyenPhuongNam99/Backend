@@ -17,7 +17,7 @@ const roomSchema = new mongoose.Schema({
   key: String,
   room_description: String,
   room_thumbnail: String,
-  user_Room: String
+  user_room: String
 })
 
 const hotelSchema = new mongoose.Schema({
